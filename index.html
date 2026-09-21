@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Number Chart Book</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%F0%9F%8E%B9</text></svg>">
+<style>
+  /* ---- Light (default, un-stamped) ---------------------------------- */
+  :root {
+    --paper:  #F6F6F4;   /* ground: neutral with a faint warm bias  */
+    --surface:#FFFFFF;
+    --ink:    #0D0E10;
+    --ink-2:  #3D4045;   /* secondary text                          */
+    --muted:  #8A8D91;   /* labels, notes                           */
+    --rule:   #DCDCD8;
+    --rule-2: #EAEAE6;   /* lighter hairline                        */
+    --on-ink: #F6F6F4;   /* text on an ink-filled surface           */
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:  #0A0B0C;
+      --surface:#121315;
+      --ink:    #F0F0EC;
+      --ink-2:  #C2C4C7;
+      --muted:  #7E8185;
+      --rule:   #26282B;
+      --rule-2: #1B1D1F;
+      --on-ink: #0A0B0C;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:  #0A0B0C;
+    --surface:#121315;
+    --ink:    #F0F0EC;
+    --ink-2:  #C2C4C7;
+    --muted:  #7E8185;
+    --rule:   #26282B;
+    --rule-2: #1B1D1F;
+    --on-ink: #0A0B0C;
+    color-scheme: dark;
+  }
+
+  :root {
+    --sans: "Helvetica Neue", Helvetica, Inter, ui-sans-serif, -apple-system,
+            BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+            "Liberation Mono", monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- Masthead ------------------------------------------------------ */
+  .bar {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 10;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px 24px;
+    flex-wrap: wrap;
+    padding: 14px 20px;
+  }
+  .brand {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: .3em;
+  }
+  .brand span { display: block; font-weight: 400; letter-spacing: .22em; color: var(--muted); }
+
+  .toggle {
+    display: flex;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .toggle button {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .18em;
+    color: var(--muted);
+    background: transparent;
+    border: 0;
+    padding: 0 20px;
+    min-height: 44px;
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease;
+  }
+  .toggle button + button { border-left: 1px solid var(--rule); }
+  .toggle button:hover { color: var(--ink); }
+  .toggle button[aria-pressed="true"] { background: var(--ink); color: var(--on-ink); }
+  :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+  /* ---- Page ---------------------------------------------------------- */
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 40px 20px 96px; }
+
+  .song + .song { margin-top: 64px; padding-top: 56px; border-top: 1px solid var(--rule); }
+
+  .head {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .num {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    padding-top: 2px;
+  }
+  .song h2 {
+    margin: 0;
+    font-size: clamp(26px, 5vw, 42px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -.005em;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+
+  .sheet { display: block; }
+  .sec { break-inside: avoid; margin-bottom: 26px; }
+  .sec-name {
+    margin: 0 0 6px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .2em;
+    color: var(--muted);
+  }
+  .sec-name .note {
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  pre {
+    margin: 0;
+    padding-left: 14px;
+    border-left: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: 19px;
+    font-weight: 500;
+    line-height: 1.75;
+    letter-spacing: .01em;
+    white-space: pre;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---- Flow ---------------------------------------------------------- */
+  .flow { margin-top: 10px; padding-top: 18px; border-top: 1px solid var(--rule-2); }
+  .flow p { margin: 0; }
+  .flow .steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+    align-items: baseline;
+    font-size: 14px;
+    color: var(--ink-2);
+  }
+  .flow .steps .sep { color: var(--muted); }
+
+  @media (min-width: 760px) {
+    body { font-size: 16px; }
+    .wrap { padding: 52px 32px 112px; }
+    pre { font-size: 21px; }
+    .flow .steps { font-size: 15px; }
+  }
+  @media (min-width: 920px) {
+    .sheet { columns: 2; column-gap: 56px; }
+    .sec { margin-bottom: 30px; }
+  }
+  @media (min-width: 1100px) {
+    pre { font-size: 23px; }
+  }
+
+  @media print {
+    .bar { display: none; }
+    .sheet { columns: 2; }
+    .song + .song { break-before: page; }
+  }
+</style>
+</head>
+<body>
+<header class="bar">
+  <h1 class="brand">Number Chart Book<span>Set list</span></h1>
+  <div class="toggle" role="group" aria-label="Chord display">
+    <button id="btn-num" type="button" aria-pressed="true">Numbers</button>
+    <button id="btn-key" type="button" aria-pressed="false">Key of F</button>
+  </div>
+</header>
+
+<div class="wrap">
+  <main id="songs"></main>
+</div>
+
+<script>
+const SONGS = [
+  {
+    title: "I Thank God",
+    sections: [
+      { name: "Intro", lines: ["1"] },
+      { name: "Verse", note: "same for both verses", lines: [
+        "1   1   4   1      ×2",
+        "5   6m   4   1",
+        "5   6m   4"
+      ]},
+      { name: "Chorus", note: "×2, 2nd time ends on 1", lines: [
+        "1   2m   1/3   4",
+        "6m   4"
+      ]},
+      { name: "Interlude", note: "×8", lines: ["1"] },
+      { name: "Bridge", note: "×4", lines: ["1   1"] },
+      { name: "Bridge variant", note: "×4", lines: ["5   6m  4  1"] }
+    ],
+    map: [
+      "Intro", "Verse 1", "Chorus", "Interlude", "Verse 2", "Chorus",
+      "Interlude ×8", "Bridge ×4", "Bridge variant ×4", "Chorus"
+    ]
+  },
+  {
+    title: "Same God",
+    sections: [
+      { name: "Intro", note: "×2", lines: ["1   4/1   1"] },
+      { name: "Verse 1", lines: [
+        "1   4/1   1      ×2",
+        "6m   4",
+        "1   4/1   1      ×2",
+        "6m   4   1      4/1   1"
+      ]},
+      { name: "Chorus", note: "×2", lines: [
+        "1   5/7",
+        "6m   5   4",
+        "1/3   4   5"
+      ]},
+      { name: "Chorus tag", note: "instrumental", lines: ["1   6m   4   5"] },
+      { name: "Verse 2", lines: [
+        "1   4/1   1      ×2",
+        "6m   6m/5   4",
+        "1   4/1   1      ×2",
+        "6m   4"
+      ]},
+      { name: "Bridge", note: "2nd line ×3", lines: [
+        "1   6m   4   4  5",
+        "1   6m   4  1/3   4  5",
+        "6m   5   4  1/3   4  2m",
+        "6m   5   4  1/3   5/7"
+      ]},
+      { name: "Instrumental", lines: [
+        "1   5/7   6m   5",
+        "4   1/3   4   5",
+        "1   3m   6m   5",
+        "4   1/3   4   5",
+        "1   6m   4   4  5      ×2"
+      ]},
+      { name: "Bridge 2 / Instrumental 2", note: "×2 each", lines: ["1   6m   4   4  5"] },
+      { name: "Verse 3", lines: [
+        "1   4/1   1",
+        "1   4/6  1/5   4  1/3   1",
+        "4/6  1/5   4  1/3   1",
+        "4/6  1/5   4   1"
+      ]}
+    ],
+    map: [
+      "Verse 1", "Verse 2", "Chorus ×3 — last chorus full, bold",
+      "Instrumental into Bridge", "Bridge ×3", "Bridge 4–6 — buildup, full band",
+      "Chorus ×2–3", "Holy Spirit moment — khusyuk, soft", "End"
+    ]
+  },
+  {
+    title: "Fall Like Rain",
+    sections: [
+      { name: "Intro", lines: ["1   5   6m   1"] },
+      { name: "Verse 1", note: "×2", lines: ["1   5   6m  4"] },
+      { name: "Verse 2", note: "3rd line = “Stir in me a passion…”", lines: [
+        "1   5   6m  1  4",
+        "1   5   6m  5  4",
+        "6m  5  4"
+      ]},
+      { name: "Chorus", lines: [
+        "1  5   6m  1/3",
+        "1  5   6m   4"
+      ]},
+      { name: "Interlude", lines: ["1   2m⁷   1   4"] },
+      { name: "Bridge", note: "×2", lines: ["1  2m⁷   1/3  4"] },
+      { name: "Final chord", lines: ["1"] }
+    ],
+    map: [
+      "Chorus — quiet", "Verse", "Chorus", "Verse", "Chorus ×2–3",
+      "Bridge — gas, full band", "Chorus ×2–3 — end quiet",
+      "medley into Give Me Jesus"
+    ]
+  },
+  {
+    title: "Give Me Jesus",
+    sections: [
+      { name: "Intro", lines: ["1   1   4   4"] },
+      { name: "Verse", note: "same for verses 1 & 2", lines: [
+        "1   1   4/3   4/3",
+        "2m   1/3   4   4"
+      ]},
+      { name: "Chorus", lines: [
+        "1   1   5   5",
+        "2m   6m   4   5"
+      ]},
+      { name: "Turnaround", lines: ["1   1"] },
+      { name: "Verse 3", note: "as above, last bar changes", lines: ["2m   1/3   4   5"] },
+      { name: "Interlude", note: "×2, 2nd time ends 5  5  4", lines: ["1/3   4   6m   5"] },
+      { name: "Bridge / Tag", note: "same progression", lines: ["1/3   4   6m   5"] }
+    ],
+    map: [
+      "Medley out of Fall Like Rain", "Chorus ×1–2 — slow",
+      "Chorus 3 — buildup", "Chorus 4 — gas, full band",
+      "Bridge ×4", "Chorus"
+    ]
+  },
+  {
+    title: "The River",
+    sections: [
+      { name: "Intro", lines: ["1   6m   2m   5"] },
+      { name: "Verse", note: "same for both verses", lines: [
+        "1   6m   2m   5",
+        "1   3m  6",
+        "2m   5   1"
+      ]},
+      { name: "Chorus", lines: [
+        "1⁷   4",
+        "5   3m",
+        "6m   2m   5  5m",
+        "1   4",
+        "5   3m   6",
+        "2m   5   1"
+      ]},
+      { name: "Instrumental", lines: ["1   6m   2m   5"] },
+      { name: "Bridge", lines: ["4   5  3m   6m  2m   5"] },
+      { name: "Post-bridge", note: "♭6 lifts the key up ½ step", lines: [
+        "4   5  3m   6m  2m   5   ♭6"
+      ]},
+      { name: "Ending tag", note: "after the overtone chorus", lines: [
+        "2m   5",
+        "5m   6",
+        "2m   5   1"
+      ]}
+    ],
+    map: [
+      "Intro", "Verse 1", "Chorus", "Instrumental", "Verse 2", "Chorus",
+      "Bridge", "Post-bridge — ½ step up", "Chorus (overtone) — same numbers",
+      "Ending tag"
+    ]
+  }
+];
+
+// Scale degrees in the key of F
+const F_SCALE = { "1": "F", "2": "G", "3": "A", "4": "Bb", "5": "C", "6": "D", "7": "E" };
+// degree, optional minor, optional 7th (superscript, so 1⁷ never reads as "17")
+const CHORD = /^([b♭]?)([1-7])(m?)(⁷?)(?:\/([b♭]?)([1-7]))?$/;
+
+// a flat degree lowers the scale note a semitone: D -> Db
+function degree(flatten, num) { return flatten ? F_SCALE[num] + "b" : F_SCALE[num]; }
+
+function toKey(line) {
+  const parts = line.split(/(\s+)/);
+  const out = [];
+  for (let i = 0; i < parts.length; i++) {
+    const tok = parts[i];
+    const m = tok.match(CHORD);
+    if (!m) { out.push(tok); continue; }
+    let name = degree(m[1], m[2]) + m[3] + (m[4] ? "7" : "");
+    if (m[6]) name += "/" + degree(m[5], m[6]);
+    // keep the columns lined up: pad when shorter, borrow a space when longer
+    if (name.length < tok.length) {
+      name += " ".repeat(tok.length - name.length);
+    } else if (name.length > tok.length) {
+      const extra = name.length - tok.length;
+      const next = parts[i + 1];
+      if (next && /^\s+$/.test(next) && next.length > extra) {
+        parts[i + 1] = next.slice(extra);
+      }
+    }
+    out.push(name);
+  }
+  return out.join("");
+}
+
+const main = document.getElementById("songs");
+const btnNum = document.getElementById("btn-num");
+const btnKey = document.getElementById("btn-key");
+const blocks = [];
+
+SONGS.forEach((song, i) => {
+  const art = document.createElement("article");
+  art.className = "song";
+
+  const head = document.createElement("div");
+  head.className = "head";
+  const num = document.createElement("span");
+  num.className = "num";
+  num.textContent = String(i + 1).padStart(2, "0");
+  const h2 = document.createElement("h2");
+  h2.textContent = song.title;
+  head.appendChild(num);
+  head.appendChild(h2);
+  art.appendChild(head);
+
+  const sheet = document.createElement("div");
+  sheet.className = "sheet";
+
+  song.sections.forEach((sec) => {
+    const s = document.createElement("div");
+    s.className = "sec";
+
+    const name = document.createElement("p");
+    name.className = "sec-name";
+    name.textContent = sec.name;
+    if (sec.note) {
+      const n = document.createElement("span");
+      n.className = "note";
+      n.textContent = "  " + sec.note;
+      name.appendChild(n);
+    }
+    s.appendChild(name);
+
+    const pre = document.createElement("pre");
+    s.appendChild(pre);
+    blocks.push({ pre: pre, lines: sec.lines });
+
+    sheet.appendChild(s);
+  });
+
+  art.appendChild(sheet);
+
+  const flow = document.createElement("div");
+  flow.className = "flow";
+  const flowName = document.createElement("p");
+  flowName.className = "sec-name";
+  flowName.textContent = "Flow";
+  flow.appendChild(flowName);
+  const steps = document.createElement("p");
+  steps.className = "steps";
+  song.map.forEach((step, j) => {
+    if (j > 0) {
+      const sep = document.createElement("span");
+      sep.className = "sep";
+      sep.textContent = "/";
+      steps.appendChild(sep);
+    }
+    const sp = document.createElement("span");
+    sp.textContent = step;
+    steps.appendChild(sp);
+  });
+  flow.appendChild(steps);
+  art.appendChild(flow);
+
+  main.appendChild(art);
+});
+
+function render(mode) {
+  blocks.forEach((b) => {
+    b.pre.textContent = (mode === "key" ? b.lines.map(toKey) : b.lines).join("\n");
+  });
+  btnNum.setAttribute("aria-pressed", String(mode !== "key"));
+  btnKey.setAttribute("aria-pressed", String(mode === "key"));
+  try { localStorage.setItem("chartMode", mode); } catch (e) {}
+}
+
+btnNum.addEventListener("click", () => render("numbers"));
+btnKey.addEventListener("click", () => render("key"));
+
+let saved = "numbers";
+try { saved = localStorage.getItem("chartMode") || "numbers"; } catch (e) {}
+render(saved);
+</script>
+
+</body>
+</html>
