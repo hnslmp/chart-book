@@ -174,6 +174,22 @@
   }
 
   /* ---- Flow ---------------------------------------------------------- */
+  /* each line is its own block so a lyric can sit tight under its chords */
+  pre .cl, pre .ly { display: block; }
+  pre .ly {
+    color: var(--ink-2);
+    font-weight: 400;
+    padding-bottom: .5em;
+  }
+  pre .ly:last-child { padding-bottom: 0; }
+
+  /* songs that carry lyrics run full width and a touch smaller.
+     .sheet.wide outranks the .sheet column rules below on specificity. */
+  .sheet.wide { columns: 1; }
+  .sheet.wide pre { font-size: 15px; line-height: 1.5; }
+  @media (min-width: 760px)  { .sheet.wide pre { font-size: 17px; } }
+  @media (min-width: 1100px) { .sheet.wide pre { font-size: 18px; } }
+
   .flow { margin-top: 10px; padding-top: 18px; border-top: 1px solid var(--rule-2); }
   .flow p { margin: 0; }
   .flow .steps {
@@ -373,16 +389,155 @@ const SONGS = [
       "Bridge", "Post-bridge — ½ step up", "Chorus (overtone) — same numbers",
       "Ending tag"
     ]
-  }
+  },
+  {
+    title: "Aku Mau Percaya",
+    wide: true,
+    sections: [
+      { name: "Intro", note: "as printed — sits a step above the verse key", lines: [
+        "2    3      6    ♯4m    5",
+      ]},
+      { name: "Verse", lines: [
+        "1            4    5          1",
+        "Aku mau percaya karena kasih setiaMu",
+        "6m           2m         1  5         1",
+        " Hatiku bersorak kar'na pe-ny'lamatanMu",
+        "              4     5          1",
+        "Aku mau bernyanyi kepada Tuhan Yesusku",
+        "6m      6⁷           2m",
+        " Kar'na Dia t'lah berbuat baik",
+        "5      4",
+        " Kepadaku.",
+      ]},
+      { name: "Transition 1", lines: [
+        "6",
+      ]},
+      { name: "Verse (overtone 1)", note: "key up a whole step (A→B); the ♭6 at the end lifts it again to C", lines: [
+        "1            4    5          3m",
+        "Aku mau percaya karena kasih setiaMu",
+        "6m           2m         5           1",
+        " Hatiku bersorak kar'na peny'lamatanMu",
+        "              4     5          1",
+        "Aku mau bernyanyi kepada Tuhan Yesusku",
+        "6⁷                   2m",
+        " Kar'na Dia t'lah berbuat baik",
+        "5      ♭6",
+        " Kepadaku.",
+      ]},
+      { name: "Transition 2", lines: [
+        "2  4  3m⁷  1⁷",
+      ]},
+      { name: "Bridge", lines: [
+        "2m⁷         1",
+        " Kumau percaya",
+        "             2⁷        5",
+        "Ku mau bernyanyi karenaMu.",
+      ]},
+      { name: "Verse (overtone 2)", lines: [
+        "             4    5          3m⁷",
+        "Aku mau percaya karena kasih setiaMu",
+        "6m           2m         5           1",
+        " Hatiku bersorak kar'na peny'lamatanMu",
+        "              2     4          3m⁷",
+        "Aku mau bernyanyi kepada Tuhan Yesusku",
+        "6⁷                   2m",
+        " Kar'na Dia t'lah berbuat baik",
+        "5      6m⁷",
+        " Kepadaku.",
+      ]},
+      { name: "Tag", lines: [
+        "3m⁷          1            2m",
+        "      Kar'na Dia t'lah berbuat baik",
+        "5      1",
+        " Kepadaku.",
+      ]},
+      { name: "Ending", lines: [
+        "             4    5          3m⁷",
+        "Aku mau percaya karena kasih setiaMu",
+        "6m           2m         5           1",
+        " Hatiku bersorak kar'na peny'lamatanMu",
+        "              2     4          3m⁷",
+        "Aku mau bernyanyi kepada Tuhan Yesusku",
+        "6                   2m",
+        " Kar'na Dia t'lah berbuat baik",
+        "5      4  1",
+        " Kepadaku.",
+      ]},
+      { name: "Outtro", lines: [
+        "            2m        5       1",
+        "Tuhan Kau sangat baik,  kepadaku.",
+      ]},
+    ],
+    map: [
+      "Intro",
+      "Verse",
+      "Transition 1",
+      "Verse (overtone 1)",
+      "Transition 2",
+      "Bridge",
+      "Verse (overtone 2)",
+      "Tag",
+      "Naration — Mazmur 13:4-6",
+      "Ending",
+      "Outtro",
+    ]
+  },
+  {
+    title: "Tetap Tersenyum",
+    wide: true,
+    sections: [
+      { name: "Verse", lines: [
+        "1                  1maj⁷",
+        "Tetap tersenyum di kala ku lemah",
+        "   4        2m     5",
+        "S'bab Tuhan besertaku",
+        "    1                1maj⁷",
+        "Dia angkat hidupku dari lumpur dosa",
+        "  4          5        1    5    1",
+        "Pulihkan dan sembuhkanku",
+      ]},
+      { name: "Chorus", lines: [
+        "1/3    4         5/4   3m      6m",
+        "Kupercaya mujizatMu pasti terjadi",
+        "      2m             5           5m   1",
+        "S'bab tiada yang tak mungkin bagiMu",
+        "1/3    4         5/4   3m      6m",
+        "Kupercaya mujizatMu pasti terjadi",
+        "   2m          5         1",
+        "Engkau Tuhan tepati janjiMu",
+      ]},
+      { name: "Interlude", note: "borrowed from E minor", lines: [
+        "♭3   4/♭3   2m      5m",
+        "1m   4      4m      ♭7",
+        "♭3   4/♭3   2m      5m",
+        "1m   ♭7/2   5sus4   5",
+      ]},
+    ],
+  },
 ];
 
 // Scale degrees in the key of F
 const F_SCALE = { "1": "F", "2": "G", "3": "A", "4": "Bb", "5": "C", "6": "D", "7": "E" };
-// degree, optional minor, optional 7th (superscript, so 1⁷ never reads as "17")
-const CHORD = /^([b♭]?)([1-7])(m?)(⁷?)(?:\/([b♭]?)([1-7]))?$/;
+// degree, optional accidental, optional quality, optional bass.
+// sevenths are superscript so 1⁷ never reads as "17".
+const QUALITY = { "maj⁷": "maj7", "m⁷": "m7", "⁷": "7", "m": "m", "sus4": "sus4", "sus2": "sus2" };
+const CHORD = /^([b♭#♯]?)([1-7])(maj⁷|sus4|sus2|m⁷|m|⁷)?(?:\/([b♭#♯]?)([1-7]))?$/;
+// bars, beat slashes and repeat marks sit on chord lines but aren't chords
+const MARKER = /^(\||\/|×\d+(–\d+)?)$/;
 
-// a flat degree lowers the scale note a semitone: D -> Db
-function degree(flatten, num) { return flatten ? F_SCALE[num] + "b" : F_SCALE[num]; }
+// an accidental shifts the scale note a semitone: D -> Db, Bb -> B
+function degree(acc, num) {
+  const name = F_SCALE[num];
+  if (!acc) return name;
+  if (acc === "b" || acc === "♭") return name + "b";
+  return name.endsWith("b") ? name.slice(0, -1) : name + "#";
+}
+
+// a line of nothing but chords and markers — lyrics are left alone
+function isChordLine(line) {
+  const toks = line.trim().split(/\s+/).filter(Boolean);
+  return toks.length > 0 && toks.every((t) => CHORD.test(t) || MARKER.test(t));
+}
 
 function toKey(line) {
   const parts = line.split(/(\s+)/);
@@ -391,8 +546,8 @@ function toKey(line) {
     const tok = parts[i];
     const m = tok.match(CHORD);
     if (!m) { out.push(tok); continue; }
-    let name = degree(m[1], m[2]) + m[3] + (m[4] ? "7" : "");
-    if (m[6]) name += "/" + degree(m[5], m[6]);
+    let name = degree(m[1], m[2]) + (m[3] ? QUALITY[m[3]] : "");
+    if (m[5]) name += "/" + degree(m[4], m[5]);
     // keep the columns lined up: pad when shorter, borrow a space when longer
     if (name.length < tok.length) {
       name += " ".repeat(tok.length - name.length);
@@ -429,7 +584,8 @@ SONGS.forEach((song, i) => {
   art.appendChild(head);
 
   const sheet = document.createElement("div");
-  sheet.className = "sheet";
+  // songs carrying lyrics need the full width, so they don't get columned
+  sheet.className = song.wide ? "sheet wide" : "sheet";
 
   song.sections.forEach((sec) => {
     const s = document.createElement("div");
@@ -454,6 +610,8 @@ SONGS.forEach((song, i) => {
   });
 
   art.appendChild(sheet);
+
+  if (!song.map) { main.appendChild(art); return; }
 
   const flow = document.createElement("div");
   flow.className = "flow";
@@ -482,7 +640,14 @@ SONGS.forEach((song, i) => {
 
 function render(mode) {
   blocks.forEach((b) => {
-    b.pre.textContent = (mode === "key" ? b.lines.map(toKey) : b.lines).join("\n");
+    b.pre.textContent = "";
+    b.lines.forEach((line) => {
+      const chords = isChordLine(line);
+      const row = document.createElement("span");
+      row.className = chords ? "cl" : "ly";
+      row.textContent = chords && mode === "key" ? toKey(line) : line;
+      b.pre.appendChild(row);
+    });
   });
   btnNum.setAttribute("aria-pressed", String(mode !== "key"));
   btnKey.setAttribute("aria-pressed", String(mode === "key"));
