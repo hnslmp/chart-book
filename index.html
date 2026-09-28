@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Number Chart Book</title>
+<title>Song List — CG Mon 28 Sep</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%F0%9F%8E%B9</text></svg>">
 <style>
   /* ---- Light (default, un-stamped) ---------------------------------- */
@@ -121,7 +121,8 @@
   .head {
     display: flex;
     align-items: baseline;
-    gap: 16px;
+    flex-wrap: wrap;
+    gap: 10px 16px;
     margin-bottom: 28px;
   }
   .num {
@@ -141,7 +142,43 @@
     text-wrap: balance;
   }
 
+  .head .meta {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .2em;
+    color: var(--muted);
+    margin-left: auto;
+    white-space: nowrap;
+  }
+
+  /* per-song key picker — only meaningful while chords are on screen */
+  .keysel { display: flex; align-items: center; gap: 8px; }
+  .keysel > span {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .2em;
+    color: var(--muted);
+  }
+  .keysel select {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 8px 10px;
+    min-height: 40px;
+    cursor: pointer;
+  }
+  body[data-mode="lyrics"] .keysel { display: none; }
+  @media print { .keysel { display: none; } }
+
   .sheet { display: block; }
+  .sec[hidden] { display: none; }
   .sec { break-inside: avoid; margin-bottom: 26px; }
   .sec-name {
     margin: 0 0 6px;
@@ -225,10 +262,10 @@
 </head>
 <body>
 <header class="bar">
-  <h1 class="brand">Number Chart Book<span>Set list</span></h1>
-  <div class="toggle" role="group" aria-label="Chord display">
-    <button id="btn-num" type="button" aria-pressed="true">Numbers</button>
-    <button id="btn-key" type="button" aria-pressed="false">Key of F</button>
+  <h1 class="brand">Song List<span>CG Mon 28 Sep</span></h1>
+  <div class="toggle" role="group" aria-label="Chart display">
+    <button id="btn-lyric" type="button" aria-pressed="true">Lyrics</button>
+    <button id="btn-num" type="button" aria-pressed="false">Chords</button>
   </div>
 </header>
 
@@ -239,365 +276,159 @@
 <script>
 const SONGS = [
   {
-    title: "I Thank God",
+    title: "Hari Ini Kurasa Bahagia",
+    artist: "Maranatha Singers", key: "F",
     sections: [
-      { name: "Intro", lines: ["1"] },
+      { name: "Intro", note: "×2 bass only, then ×2 full band", lines: [
+        "| 1 • 4 • | 1 • 4 • |",
+        "| 1 • 2m • | 3m • 4 • |",
+        "| 1 • 2m • | 3m • 4 • |",
+      ]},
       { name: "Verse", note: "same for both verses", lines: [
-        "1   1   4   1      ×2",
-        "5   6m   4   1",
-        "5   6m   4"
+        "1 5          4          1",
+        "Ha-ri ini ku rasa bahagia",
+        "      6m              2      5",
+        "Berkumpul bersama saudara seiman",
+        "1 5                4         1",
+        "Tu-han Yesus telah satukan kita",
+        "      6m           4  5     1 5",
+        "Tanpa memandang di antara kita.",
       ]},
-      { name: "Chorus", note: "×2, 2nd time ends on 1", lines: [
-        "1   2m   1/3   4",
-        "6m   4"
+      { name: "Pre-Chorus", lines: [
+        "5       1",
+        "Bergandengan tangan",
+        "  5           4          1",
+        "Dalam kasih dalam satu hati",
+        "1 - 7 - 6m          2           5",
+        "Ber-ja-lan dalam terang kasih Tuhan",
       ]},
-      { name: "Interlude", note: "×8", lines: ["1"] },
-      { name: "Bridge", note: "×4", lines: ["1   1"] },
-      { name: "Bridge variant", note: "×4", lines: ["5   6m  4  1"] }
-    ],
-    map: [
-      "Intro", "Verse 1", "Chorus", "Interlude", "Verse 2", "Chorus",
-      "Interlude ×8", "Bridge ×4", "Bridge variant ×4", "Chorus"
-    ]
-  },
-  {
-    title: "Same God",
-    sections: [
-      { name: "Intro", note: "×2", lines: ["1   4/1   1"] },
-      { name: "Verse 1", lines: [
-        "1   4/1   1      ×2",
-        "6m   4",
-        "1   4/1   1      ×2",
-        "6m   4   1      4/1   1"
-      ]},
-      { name: "Chorus", note: "×2", lines: [
-        "1   5/7",
-        "6m   5   4",
-        "1/3   4   5"
-      ]},
-      { name: "Chorus tag", note: "instrumental", lines: ["1   6m   4   5"] },
-      { name: "Verse 2", lines: [
-        "1   4/1   1      ×2",
-        "6m   6m/5   4",
-        "1   4/1   1      ×2",
-        "6m   4"
-      ]},
-      { name: "Bridge", note: "2nd line ×3", lines: [
-        "1   6m   4   4  5",
-        "1   6m   4  1/3   4  5",
-        "6m   5   4  1/3   4  2m",
-        "6m   5   4  1/3   5/7"
+      { name: "Chorus", lines: [
+        "4     5       3m     6m",
+        "Kau sahabatku kau saudaraku",
+        "      4            5          1 1⁷",
+        "Tiada yang dapat memisahkan kita",
+        "4     5       3m     6m",
+        "Kau sahabatku kau saudaraku",
+        "      2m           5          1",
+        "Tiada yang dapat memisahkan kita.",
       ]},
       { name: "Instrumental", lines: [
-        "1   5/7   6m   5",
-        "4   1/3   4   5",
-        "1   3m   6m   5",
-        "4   1/3   4   5",
-        "1   6m   4   4  5      ×2"
+        "| 1 • 2m • | 3m • 4 • |",
+        "| 1 • 2m • | 3m • 4 • |",
       ]},
-      { name: "Bridge 2 / Instrumental 2", note: "×2 each", lines: ["1   6m   4   4  5"] },
-      { name: "Verse 3", lines: [
-        "1   4/1   1",
-        "1   4/6  1/5   4  1/3   1",
-        "4/6  1/5   4  1/3   1",
-        "4/6  1/5   4   1"
-      ]}
+      { name: "Chorus (overtone)", shift: 2, note: "×2, key up a whole step — numbers read against the new key", lines: [
+        "4                5/4",
+        "Kau, kau, kau sahabatku",
+        "(Kau, kau, kau, kau, kau sahabatku)",
+        "5         3m     6m",
+        "Kau, kau, kau saudaraku",
+        "(Kau, kau, kau, kau, kau sahabatku)",
+        "      4             5         1 1⁷",
+        "Tiada yang dapat memisahkan kita.",
+      ]},
+      { name: "Ending", shift: 2, note: "still against the raised key", lines: [
+        "1m       2m           5          1",
+        "   Tiada yang dapat memisahkan kita",
+        "1m       2m           5          1",
+        "   Tiada yang dapat memisahkan kita.",
+      ]},
     ],
     map: [
-      "Verse 1", "Verse 2", "Chorus ×3 — last chorus full, bold",
-      "Instrumental into Bridge", "Bridge ×3", "Bridge 4–6 — buildup, full band",
-      "Chorus ×2–3", "Holy Spirit moment — khusyuk, soft", "End"
-    ]
+      "Intro", "Verse 1", "Pre-Chorus", "Chorus", "Instrumental",
+      "Verse 2", "Pre-Chorus", "Chorus", "Pre-Chorus", "Chorus",
+      "Chorus (overtone) ×2 — ½ step... whole step up", "Ending",
+    ],
   },
   {
-    title: "Fall Like Rain",
+    title: "Ku Kagum Akan Engkau",
+    artist: "GMS Live", key: "Bb",
     sections: [
-      { name: "Intro", lines: ["1   5   6m   1"] },
-      { name: "Verse 1", note: "×2", lines: ["1   5   6m  4"] },
-      { name: "Verse 2", note: "3rd line = “Stir in me a passion…”", lines: [
-        "1   5   6m  1  4",
-        "1   5   6m  5  4",
-        "6m  5  4"
+      { name: "Verse 1", lines: [
+        "1       4m/1",
+        "Kukagum akan Engkau",
+        "1/3           6m",
+        "Kau Raja yang mulia",
+        "4        3m",
+        "Terindah termegah",
+        "   2m         5",
+        "Pujian ku berikan",
+      ]},
+      { name: "Verse 2", lines: [
+        "1        4m/1",
+        "Kau buat ku terpana",
+        "1/3         6m",
+        "KaryaMu tak ternilai",
+        "4               3m",
+        "Kau Tuhan Sang Pencipta",
+        "   2m        5",
+        "Layak diagungkan",
       ]},
       { name: "Chorus", lines: [
-        "1  5   6m  1/3",
-        "1  5   6m   4"
+        "1         3m",
+        "Mulia Kau mulia",
+        "    4            6m   5",
+        "Kaulah Raja atas semesta",
+        "1          3m",
+        "Izinkan ku mendekat",
+        " 4                  5          1",
+        "Meninggikan seluruh bumi menyembah",
       ]},
-      { name: "Interlude", lines: ["1   2m⁷   1   4"] },
-      { name: "Bridge", note: "×2", lines: ["1  2m⁷   1/3  4"] },
-      { name: "Final chord", lines: ["1"] }
     ],
-    map: [
-      "Chorus — quiet", "Verse", "Chorus", "Verse", "Chorus ×2–3",
-      "Bridge — gas, full band", "Chorus ×2–3 — end quiet",
-      "medley into Give Me Jesus"
-    ]
+    map: ["Verse 1", "Verse 2", "Chorus"],
   },
   {
-    title: "Give Me Jesus",
-    sections: [
-      { name: "Intro", lines: ["1   1   4   4"] },
-      { name: "Verse", note: "same for verses 1 & 2", lines: [
-        "1   1   4/3   4/3",
-        "2m   1/3   4   4"
-      ]},
-      { name: "Chorus", lines: [
-        "1   1   5   5",
-        "2m   6m   4   5"
-      ]},
-      { name: "Turnaround", lines: ["1   1"] },
-      { name: "Verse 3", note: "as above, last bar changes", lines: ["2m   1/3   4   5"] },
-      { name: "Interlude", note: "×2, 2nd time ends 5  5  4", lines: ["1/3   4   6m   5"] },
-      { name: "Bridge / Tag", note: "same progression", lines: ["1/3   4   6m   5"] }
-    ],
-    map: [
-      "Medley out of Fall Like Rain", "Chorus ×1–2 — slow",
-      "Chorus 3 — buildup", "Chorus 4 — gas, full band",
-      "Bridge ×4", "Chorus"
-    ]
-  },
-  {
-    title: "The River",
-    wide: true,
+    title: "Ku Kagum Hormat Akan Engkau",
+    artist: "Gloria Trio", key: "A",
     sections: [
       { name: "Intro", lines: [
-        "1   6m   2m   5",
-      ]},
-      { name: "Verse 1", lines: [
-        "           1",
-        "It doesn't matter who you are",
-        "           6m",
-        "It doesn't matter where you've been",
-        "           2m",
-        "It doesn't matter what the scar",
-        "           5",
-        "It doesn't matter what the sin",
-        "           1",
-        "It doesn't matter how you fell",
-        "    3m              6",
-        "Somewhere along the way",
-        "         2m               5      1",
-        "There is healing for your life today",
-      ]},
-      { name: "Chorus", lines: [
-        "          1⁷         4",
-        "There's a river that flows",
-        "         5           3m",
-        "From the fountain of God",
-        "       6m             2m     5      5m",
-        "And it heals everything along the way",
-        "       1            4",
-        "I have tasted and known",
-        "         5       3m     6",
-        "That for every broken heart",
-        "         2m          5    1",
-        "There is healing in Jesus Name",
-      ]},
-      { name: "Instrumental", lines: [
-        "1   6m   2m   5",
-      ]},
-      { name: "Verse 2", lines: [
-        "           1",
-        "He looks beyond how far you've gone",
-        "           6m",
-        "He looks beyond when you were hurt",
-        "           2m",
-        "He looks beyond who stole your song",
-        "           5",
-        "He looks beyond what made it worse",
-        "           1",
-        "He looks beyond where others failed",
-        "         3m             6",
-        "To reach out to you and say",
-        "        2m               5      1",
-        "There's healing for your life today",
-      ]},
-      { name: "Bridge", lines: [
-        "                  4",
-        "It's a river that loves",
-        "       5          3m",
-        "It's a river that lives",
-        "         6m         2m",
-        "It's the River of Life",
-        "                5",
-        "Living water it gives",
-      ]},
-      { name: "Post-bridge", note: "the ♭6 lifts the key up ½ step", lines: [
-        "4   5   3m   6m   2m   5   ♭6",
-      ]},
-      { name: "Chorus (overtone)", note: "same numbers as the chorus, key up ½ step", lines: [
-        "          1⁷         4",
-        "There's a river that flows",
-        "         5           3m",
-        "From the fountain of God",
-        "       6m             2m     5      5m",
-        "And it heals everything along the way",
-        "       1⁷           4",
-        "I have tasted and known",
-        "         5       3m     6",
-        "That for every broken heart",
-        "         2m          5",
-        "There is healing in Jesus",
-        "5m           6",
-        "Healing in Jesus",
-        "2m          5    1",
-        "Healing in Jesus Name",
-      ]},
-    ],
-    map: [
-      "Intro",
-      "Verse 1",
-      "Chorus",
-      "Instrumental",
-      "Verse 2",
-      "Chorus",
-      "Bridge",
-      "Post-bridge — ½ step up",
-      "Chorus (overtone)",
-    ]
-  },
-  {
-    title: "Aku Mau Percaya",
-    wide: true,
-    sections: [
-      { name: "Intro", note: "as printed, against the verse key — the same chords read 1 2 5 3m 4 a whole step up, so the chart may be showing the key the recording opens in. Check the track.", lines: [
-        "2    3      6    ♯4m    5",
+        "| 1   3m  4   5 | 6m  4   5  • |",
       ]},
       { name: "Verse", lines: [
-        "1            4    5          1",
-        "Aku mau percaya karena kasih setiaMu",
-        "6m           2m         1  5         1",
-        " Hatiku bersorak kar'na pe-ny'lamatanMu",
-        "              4     5          1",
-        "Aku mau bernyanyi kepada Tuhan Yesusku",
-        "6m      6⁷           2m",
-        " Kar'na Dia t'lah berbuat baik",
-        "5      4",
-        " Kepadaku.",
+        "          1",
+        "Kau sungguh indah tiada taranya",
+        "     4      5     1    5",
+        "Sungguh menakjubkan",
+        "     1                    1/3",
+        "Sungguh ajaib 'tuk dimengerti",
+        "  4                 2/♯4 5",
+        "Lebih dari semua yang ada",
+        "3/♭6     6m    3/♭6       5 2/♯4",
+        " HikmatMu tiada terselami",
+        "       4    2m           5",
+        "KasihMu dalam 'tak terduga",
+        "          1",
+        "Kau sungguh indah tiada taranya",
+        "     4      5     1 4 5",
+        "Mulia dan berkuasa.",
       ]},
-      { name: "Transition 1", lines: [
-        "6",
+      { name: "Chorus", note: "×2", lines: [
+        "     1       3m  4          5",
+        "Ku kagum hormat akan Engkau",
+        "     1       3m  4",
+        "Ku kagum hormat akan Engkau",
+        "       3/♭6     3     6m  5    2/♯4",
+        "Kau Allah yang layak di - pu - ji",
+        "     2m    5       1  4 5",
+        "Ku kagum akan Engkau.",
       ]},
-      { name: "Verse (overtone 1)", note: "key up a whole step (A→B); the ♭6 at the end lifts it again to C", lines: [
-        "1            4    5          3m",
-        "Aku mau percaya karena kasih setiaMu",
-        "6m           2m         5           1",
-        " Hatiku bersorak kar'na peny'lamatanMu",
-        "              4     5          1",
-        "Aku mau bernyanyi kepada Tuhan Yesusku",
-        "6⁷                   2m",
-        " Kar'na Dia t'lah berbuat baik",
-        "5      ♭6",
-        " Kepadaku.",
-      ]},
-      { name: "Transition 2", lines: [
-        "2  4  3m⁷  1⁷",
-      ]},
-      { name: "Bridge", lines: [
-        "2m⁷         1",
-        " Kumau percaya",
-        "             2⁷        5",
-        "Ku mau bernyanyi karenaMu.",
-      ]},
-      { name: "Verse (overtone 2)", lines: [
-        "             4    5          3m⁷",
-        "Aku mau percaya karena kasih setiaMu",
-        "6m           2m         5           1",
-        " Hatiku bersorak kar'na peny'lamatanMu",
-        "              2     4          3m⁷",
-        "Aku mau bernyanyi kepada Tuhan Yesusku",
-        "6⁷                   2m",
-        " Kar'na Dia t'lah berbuat baik",
-        "5      6m⁷",
-        " Kepadaku.",
-      ]},
-      { name: "Tag", lines: [
-        "3m⁷          1            2m",
-        "      Kar'na Dia t'lah berbuat baik",
-        "5      1",
-        " Kepadaku.",
-      ]},
-      { name: "Ending", lines: [
-        "             4    5          3m⁷",
-        "Aku mau percaya karena kasih setiaMu",
-        "6m           2m         5           1",
-        " Hatiku bersorak kar'na peny'lamatanMu",
-        "              2     4          3m⁷",
-        "Aku mau bernyanyi kepada Tuhan Yesusku",
-        "6                   2m",
-        " Kar'na Dia t'lah berbuat baik",
-        "5      4  1",
-        " Kepadaku.",
-      ]},
-      { name: "Outtro", lines: [
-        "            2m        5       1",
-        "Tuhan Kau sangat baik,  kepadaku.",
+      { name: "Worshiping", lines: [
+        "4     5    4        1            4   5",
+        "  Aku kagum padaMu.. Yesus",
+        "4 1            4           5",
+        "  Kau melebihi apapun di dunia ini",
+        "4         1",
+        "  Hohowooo...",
       ]},
     ],
-    map: [
-      "Intro",
-      "Verse",
-      "Transition 1",
-      "Verse (overtone 1)",
-      "Transition 2",
-      "Bridge",
-      "Verse (overtone 2)",
-      "Tag",
-      "Naration — Mazmur 13:4-6",
-      "Ending",
-      "Outtro",
-    ]
-  },
-  {
-    title: "Tetap Tersenyum",
-    wide: true,
-    sections: [
-      { name: "Verse", lines: [
-        "1                  1maj⁷",
-        "Tetap tersenyum di kala ku lemah",
-        "   4        2m     5",
-        "S'bab Tuhan besertaku",
-        "    1                1maj⁷",
-        "Dia angkat hidupku dari lumpur dosa",
-        "  4          5        1    5    1",
-        "Pulihkan dan sembuhkanku",
-      ]},
-      { name: "Chorus", lines: [
-        "1/3    4         5/4   3m      6m",
-        "Kupercaya mujizatMu pasti terjadi",
-        "      2m             5           5m   1",
-        "S'bab tiada yang tak mungkin bagiMu",
-        "1/3    4         5/4   3m      6m",
-        "Kupercaya mujizatMu pasti terjadi",
-        "   2m          5         1",
-        "Engkau Tuhan tepati janjiMu",
-      ]},
-      { name: "Interlude", note: "borrowed from E minor", lines: [
-        "♭3   4/♭3   2m      5m",
-        "1m   4      4m      ♭7",
-        "♭3   4/♭3   2m      5m",
-        "1m   ♭7/2   5sus4   5",
-      ]},
-    ],
+    map: ["Intro", "Verse", "Chorus ×2", "Worshiping"],
   },
 ];
 
-// Scale degrees in the key of F
-const F_SCALE = { "1": "F", "2": "G", "3": "A", "4": "Bb", "5": "C", "6": "D", "7": "E" };
 // degree, optional accidental, optional quality, optional bass.
 // sevenths are superscript so 1⁷ never reads as "17".
-const QUALITY = { "maj⁷": "maj7", "m⁷": "m7", "⁷": "7", "m": "m", "sus4": "sus4", "sus2": "sus2" };
 const CHORD = /^([b♭#♯]?)([1-7])(maj⁷|sus4|sus2|m⁷|m|⁷)?(?:\/([b♭#♯]?)([1-7]))?$/;
-// bars, beat slashes and repeat marks sit on chord lines but aren't chords
-const MARKER = /^(\||\/|×\d+(–\d+)?)$/;
-
-// an accidental shifts the scale note a semitone: D -> Db, Bb -> B
-function degree(acc, num) {
-  const name = F_SCALE[num];
-  if (!acc) return name;
-  if (acc === "b" || acc === "♭") return name + "b";
-  return name.endsWith("b") ? name.slice(0, -1) : name + "#";
-}
+// bars, beat dots, dashes and repeat marks sit on chord lines but aren't chords
+const MARKER = /^(\||•|-|×\d+(–\d+)?)$/;
 
 // a line of nothing but chords and markers — lyrics are left alone
 function isChordLine(line) {
@@ -605,16 +436,55 @@ function isChordLine(line) {
   return toks.length > 0 && toks.every((t) => CHORD.test(t) || MARKER.test(t));
 }
 
-function toKey(line) {
+// ---- Numbers → letters ------------------------------------------------
+// keys are spelled the way their signature spells them, so the key of F
+// reads Bb and the key of E reads F#. 12 keys, indexed by pitch class.
+const KEY_PC = { C: 0, Db: 1, D: 2, Eb: 3, E: 4, F: 5, "F#": 6, G: 7, Ab: 8, A: 9, Bb: 10, B: 11 };
+const KEY_ORDER = ["C", "Db", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"];
+const KEY_LABEL = { Db: "D♭", Eb: "E♭", "F#": "F♯", Ab: "A♭", Bb: "B♭" };
+const SCALES = {
+  C:    ["C", "D", "E", "F", "G", "A", "B"],
+  Db:   ["Db", "Eb", "F", "Gb", "Ab", "Bb", "C"],
+  D:    ["D", "E", "F#", "G", "A", "B", "C#"],
+  Eb:   ["Eb", "F", "G", "Ab", "Bb", "C", "D"],
+  E:    ["E", "F#", "G#", "A", "B", "C#", "D#"],
+  F:    ["F", "G", "A", "Bb", "C", "D", "E"],
+  "F#": ["F#", "G#", "A#", "B", "C#", "D#", "F"],
+  G:    ["G", "A", "B", "C", "D", "E", "F#"],
+  Ab:   ["Ab", "Bb", "C", "Db", "Eb", "F", "G"],
+  A:    ["A", "B", "C#", "D", "E", "F#", "G#"],
+  Bb:   ["Bb", "C", "D", "Eb", "F", "G", "A"],
+  B:    ["B", "C#", "D#", "E", "F#", "G#", "A#"],
+};
+const QUALITY = { "maj⁷": "maj7", "m⁷": "m7", "⁷": "7", m: "m", sus4: "sus4", sus2: "sus2" };
+
+function keyLabel(k) { return KEY_LABEL[k] || k; }
+
+// a section may sit a few semitones above the song's key (an overtone lift)
+function shiftKey(key, semitones) {
+  return KEY_ORDER[(KEY_PC[key] + (semitones || 0) + 12) % 12];
+}
+
+// an accidental moves the scale note a semitone: D → Db, Bb → B, F# → F
+function degree(key, acc, num) {
+  const name = SCALES[key][Number(num) - 1];
+  if (!acc) return name;
+  if (acc === "b" || acc === "♭") {
+    return name.endsWith("#") ? name.slice(0, -1) : name + "b";
+  }
+  return name.endsWith("b") ? name.slice(0, -1) : name + "#";
+}
+
+function toLetters(line, key) {
   const parts = line.split(/(\s+)/);
   const out = [];
   for (let i = 0; i < parts.length; i++) {
     const tok = parts[i];
     const m = tok.match(CHORD);
     if (!m) { out.push(tok); continue; }
-    let name = degree(m[1], m[2]) + (m[3] ? QUALITY[m[3]] : "");
-    if (m[5]) name += "/" + degree(m[4], m[5]);
-    // keep the columns lined up: pad when shorter, borrow a space when longer
+    let name = degree(key, m[1], m[2]) + (m[3] ? QUALITY[m[3]] : "");
+    if (m[5]) name += "/" + degree(key, m[4], m[5]);
+    // keep the columns over the syllables: pad when shorter, borrow a space when longer
     if (name.length < tok.length) {
       name += " ".repeat(tok.length - name.length);
     } else if (name.length > tok.length) {
@@ -629,10 +499,15 @@ function toKey(line) {
   return out.join("");
 }
 
+// ---- Build ------------------------------------------------------------
 const main = document.getElementById("songs");
+const btnLyric = document.getElementById("btn-lyric");
 const btnNum = document.getElementById("btn-num");
-const btnKey = document.getElementById("btn-key");
 const blocks = [];
+// "numbers", or one of KEY_ORDER — chosen per song
+const chosen = SONGS.map((s) => {
+  try { return localStorage.getItem("songKey:" + s.title) || "numbers"; } catch (e) { return "numbers"; }
+});
 
 SONGS.forEach((song, i) => {
   const art = document.createElement("article");
@@ -647,11 +522,43 @@ SONGS.forEach((song, i) => {
   h2.textContent = song.title;
   head.appendChild(num);
   head.appendChild(h2);
+
+  const meta = document.createElement("span");
+  meta.className = "meta";
+  meta.textContent = song.artist;
+  head.appendChild(meta);
+
+  const label = document.createElement("label");
+  label.className = "keysel";
+  const cap = document.createElement("span");
+  cap.textContent = "Key";
+  const sel = document.createElement("select");
+  sel.setAttribute("aria-label", "Key for " + song.title);
+  const optNum = document.createElement("option");
+  optNum.value = "numbers";
+  optNum.textContent = "Numbers";
+  sel.appendChild(optNum);
+  KEY_ORDER.forEach((k) => {
+    const o = document.createElement("option");
+    o.value = k;
+    o.textContent = keyLabel(k) + (k === song.key ? "  (as written)" : "");
+    sel.appendChild(o);
+  });
+  sel.value = chosen[i];
+  sel.addEventListener("change", () => {
+    chosen[i] = sel.value;
+    try { localStorage.setItem("songKey:" + song.title, sel.value); } catch (e) {}
+    render();
+  });
+  label.appendChild(cap);
+  label.appendChild(sel);
+  head.appendChild(label);
+
   art.appendChild(head);
 
+  // every song carries lyrics, so the sheet runs full width
   const sheet = document.createElement("div");
-  // songs carrying lyrics need the full width, so they don't get columned
-  sheet.className = song.wide ? "sheet wide" : "sheet";
+  sheet.className = "sheet wide";
 
   song.sections.forEach((sec) => {
     const s = document.createElement("div");
@@ -670,7 +577,9 @@ SONGS.forEach((song, i) => {
 
     const pre = document.createElement("pre");
     s.appendChild(pre);
-    blocks.push({ pre: pre, lines: sec.lines });
+    // a section of nothing but chords has nothing to say in lyrics mode
+    const hasLyrics = sec.lines.some((line) => !isChordLine(line));
+    blocks.push({ song: i, sec: s, pre: pre, lines: sec.lines, shift: sec.shift || 0, hasLyrics: hasLyrics });
 
     sheet.appendChild(s);
   });
@@ -704,28 +613,38 @@ SONGS.forEach((song, i) => {
   main.appendChild(art);
 });
 
-function render(mode) {
+// ---- Render -----------------------------------------------------------
+let mode = "lyrics";
+
+function render() {
+  const lyrics = mode !== "chords";
   blocks.forEach((b) => {
     b.pre.textContent = "";
+    b.sec.hidden = lyrics && !b.hasLyrics;
+    const pick = chosen[b.song];
+    const key = pick === "numbers" ? null : shiftKey(pick, b.shift);
     b.lines.forEach((line) => {
       const chords = isChordLine(line);
+      if (chords && lyrics) return;
       const row = document.createElement("span");
       row.className = chords ? "cl" : "ly";
-      row.textContent = chords && mode === "key" ? toKey(line) : line;
+      row.textContent = chords && key ? toLetters(line, key) : line;
       b.pre.appendChild(row);
     });
   });
-  btnNum.setAttribute("aria-pressed", String(mode !== "key"));
-  btnKey.setAttribute("aria-pressed", String(mode === "key"));
-  try { localStorage.setItem("chartMode", mode); } catch (e) {}
+  document.body.dataset.mode = lyrics ? "lyrics" : "chords";
+  btnLyric.setAttribute("aria-pressed", String(lyrics));
+  btnNum.setAttribute("aria-pressed", String(!lyrics));
+  try { localStorage.setItem("chartMode", lyrics ? "lyrics" : "chords"); } catch (e) {}
 }
 
-btnNum.addEventListener("click", () => render("numbers"));
-btnKey.addEventListener("click", () => render("key"));
+function setMode(next) { mode = next; render(); }
 
-let saved = "numbers";
-try { saved = localStorage.getItem("chartMode") || "numbers"; } catch (e) {}
-render(saved);
+btnLyric.addEventListener("click", () => setMode("lyrics"));
+btnNum.addEventListener("click", () => setMode("chords"));
+
+try { mode = localStorage.getItem("chartMode") === "chords" ? "chords" : "lyrics"; } catch (e) {}
+render();
 </script>
 
 </body>
