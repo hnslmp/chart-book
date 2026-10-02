@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Song List — CG Mon 28 Sep</title>
+<title>Song List — Sunday 5 Oct</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%F0%9F%8E%B9</text></svg>">
 <style>
   /* ---- Light (default, un-stamped) ---------------------------------- */
@@ -152,30 +152,6 @@
     white-space: nowrap;
   }
 
-  /* per-song key picker — only meaningful while chords are on screen */
-  .keysel { display: flex; align-items: center; gap: 8px; }
-  .keysel > span {
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: .2em;
-    color: var(--muted);
-  }
-  .keysel select {
-    font-family: var(--sans);
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: .08em;
-    color: var(--ink);
-    background: var(--surface);
-    border: 1px solid var(--rule);
-    border-radius: 2px;
-    padding: 8px 10px;
-    min-height: 40px;
-    cursor: pointer;
-  }
-  body[data-mode="lyrics"] .keysel { display: none; }
-  @media print { .keysel { display: none; } }
 
   .sheet { display: block; }
   .sec[hidden] { display: none; }
@@ -262,10 +238,10 @@
 </head>
 <body>
 <header class="bar">
-  <h1 class="brand">Song List<span>CG Mon 28 Sep</span></h1>
+  <h1 class="brand">Song List<span>Sunday 5 Oct</span></h1>
   <div class="toggle" role="group" aria-label="Chart display">
-    <button id="btn-lyric" type="button" aria-pressed="true">Lyrics</button>
-    <button id="btn-num" type="button" aria-pressed="false">Chords</button>
+    <button id="btn-num" type="button" aria-pressed="true">Numbers</button>
+    <button id="btn-key" type="button" aria-pressed="false">Key</button>
   </div>
 </header>
 
@@ -276,157 +252,277 @@
 <script>
 const SONGS = [
   {
-    title: "Hari Ini Kurasa Bahagia",
-    artist: "Maranatha Singers", key: "F",
+    title: "Sukacita Surga",
+    artist: "True Worshippers", key: "D",
     sections: [
-      { name: "Intro", note: "×2 bass only, then ×2 full band", lines: [
-        "| 1 • 4 • | 1 • 4 • |",
-        "| 1 • 2m • | 3m • 4 • |",
-        "| 1 • 2m • | 3m • 4 • |",
+      { name: "Intro", note: "×4", lines: [
+        "1   6m   4   5   4",
       ]},
-      { name: "Verse", note: "same for both verses", lines: [
-        "1 5          4          1",
-        "Ha-ri ini ku rasa bahagia",
-        "      6m              2      5",
-        "Berkumpul bersama saudara seiman",
-        "1 5                4         1",
-        "Tu-han Yesus telah satukan kita",
-        "      6m           4  5     1 5",
-        "Tanpa memandang di antara kita.",
+      { name: "Bait", note: "chord placement approximate — the source lists them per line", lines: [
+        "1    6m   5/7  5   4",
+        "T'rima Sukacita Surga",
+        "1/3  4    6m   5",
+        "Itulah Kekuatan Bagi Jiwa",
+        "1/3  5/7  5    6m",
+        "Ku Dapat Rasakan KasihNya",
+        "2m   5",
+        "Di Tengah Badai Yang Bergelora",
+        "1    6m   ♭7   4/6  5/7",
+        "T'rima Sukacita Surga",
+        "1/3  4    6m   5",
+        "Itulah Kekuatan Bagi Jiwa",
+        "1/3  5    6m   1/3",
+        "Ku Dapat Saksikan KuasaNya",
+        "2m   5",
+        "Taklukkan Badai Yang Bergelora",
       ]},
-      { name: "Pre-Chorus", lines: [
-        "5       1",
-        "Bergandengan tangan",
-        "  5           4          1",
-        "Dalam kasih dalam satu hati",
-        "1 - 7 - 6m          2           5",
-        "Ber-ja-lan dalam terang kasih Tuhan",
-      ]},
-      { name: "Chorus", lines: [
-        "4     5       3m     6m",
-        "Kau sahabatku kau saudaraku",
-        "      4            5          1 1⁷",
-        "Tiada yang dapat memisahkan kita",
-        "4     5       3m     6m",
-        "Kau sahabatku kau saudaraku",
-        "      2m           5          1",
-        "Tiada yang dapat memisahkan kita.",
-      ]},
-      { name: "Instrumental", lines: [
-        "| 1 • 2m • | 3m • 4 • |",
-        "| 1 • 2m • | 3m • 4 • |",
-      ]},
-      { name: "Chorus (overtone)", shift: 2, note: "×2, key up a whole step — numbers read against the new key", lines: [
-        "4                5/4",
-        "Kau, kau, kau sahabatku",
-        "(Kau, kau, kau, kau, kau sahabatku)",
-        "5         3m     6m",
-        "Kau, kau, kau saudaraku",
-        "(Kau, kau, kau, kau, kau sahabatku)",
-        "      4             5         1 1⁷",
-        "Tiada yang dapat memisahkan kita.",
-      ]},
-      { name: "Ending", shift: 2, note: "still against the raised key", lines: [
-        "1m       2m           5          1",
-        "   Tiada yang dapat memisahkan kita",
-        "1m       2m           5          1",
-        "   Tiada yang dapat memisahkan kita.",
+      { name: "Reff", lines: [
+        "1    5/7  6m   4",
+        "Haleluya Kau Ada Dalam Hatiku",
+        "2m   5",
+        "Tak Kan Patah Semangatku",
+        "2m   5",
+        "Tak Kan Hilang Kekuatanku",
+        "1    5/7  6m   4",
+        "Haleluya Ku Mau Bersorak BagiMu",
+        "2m   5    1",
+        "Sukacita Surga Nyata Penuhiku",
       ]},
     ],
     map: [
-      "Intro", "Verse 1", "Pre-Chorus", "Chorus", "Instrumental",
-      "Verse 2", "Pre-Chorus", "Chorus", "Pre-Chorus", "Chorus",
-      "Chorus (overtone) ×2 — ½ step... whole step up", "Ending",
-    ],
+      "Intro ×4",
+      "Bait",
+      "Reff",
+      "Bait",
+      "Reff ×2",
+    ]
   },
   {
-    title: "Ku Kagum Akan Engkau",
-    artist: "GMS Live", key: "Bb",
-    sections: [
-      { name: "Verse 1", lines: [
-        "1       4m/1",
-        "Kukagum akan Engkau",
-        "1/3           6m",
-        "Kau Raja yang mulia",
-        "4        3m",
-        "Terindah termegah",
-        "   2m         5",
-        "Pujian ku berikan",
-      ]},
-      { name: "Verse 2", lines: [
-        "1        4m/1",
-        "Kau buat ku terpana",
-        "1/3         6m",
-        "KaryaMu tak ternilai",
-        "4               3m",
-        "Kau Tuhan Sang Pencipta",
-        "   2m        5",
-        "Layak diagungkan",
-      ]},
-      { name: "Chorus", lines: [
-        "1         3m",
-        "Mulia Kau mulia",
-        "    4            6m   5",
-        "Kaulah Raja atas semesta",
-        "1          3m",
-        "Izinkan ku mendekat",
-        " 4                  5          1",
-        "Meninggikan seluruh bumi menyembah",
-      ]},
-    ],
-    map: ["Verse 1", "Verse 2", "Chorus"],
-  },
-  {
-    title: "Ku Kagum Hormat Akan Engkau",
-    artist: "Gloria Trio", key: "A",
+    title: "Kecap Dan Lihatlah",
+    artist: "GMS Live", key: "D",
     sections: [
       { name: "Intro", lines: [
-        "| 1   3m  4   5 | 6m  4   5  • |",
+        "| 1/5  2⁷/♯4  ♭7  4/6 |",
+        "| 1    4/1  2m  3m  4 |",
+        "| 1/5  2    4    5    |",
+        "| 6m   2    2m  3m  4 |",
       ]},
       { name: "Verse", lines: [
-        "          1",
-        "Kau sungguh indah tiada taranya",
-        "     4      5     1    5",
-        "Sungguh menakjubkan",
-        "     1                    1/3",
-        "Sungguh ajaib 'tuk dimengerti",
-        "  4                 2/♯4 5",
-        "Lebih dari semua yang ada",
-        "3/♭6     6m    3/♭6       5 2/♯4",
-        " HikmatMu tiada terselami",
-        "       4    2m           5",
-        "KasihMu dalam 'tak terduga",
-        "          1",
-        "Kau sungguh indah tiada taranya",
-        "     4      5     1 4 5",
-        "Mulia dan berkuasa.",
+        "1        2",
+        " Kecap dan lihatlah",
+        "   ♭7       4/6",
+        " Betapa baik Tuhan itu",
+        "1        4/1          2m   3m 4",
+        " Mulutku penuh dengan pu - jian",
+      ]},
+      { name: "Pre-chorus", lines: [
+        "1        4/1",
+        " KasihMu s'lalu baru",
+        "2m         4",
+        " Tak habis di hidupku",
+        "6m⁷       2⁷            2m 3m 4  5",
+        " Kan kunyanyikan syukur ba-gi-Mu",
       ]},
       { name: "Chorus", note: "×2", lines: [
-        "     1       3m  4          5",
-        "Ku kagum hormat akan Engkau",
-        "     1       3m  4",
-        "Ku kagum hormat akan Engkau",
-        "       3/♭6     3     6m  5    2/♯4",
-        "Kau Allah yang layak di - pu - ji",
-        "     2m    5       1  4 5",
-        "Ku kagum akan Engkau.",
+        "1               4",
+        " Angkat suaramu pujilah Tuhan",
+        "6m             4          5",
+        " Mari bersorak bertepuk tangan",
+        "1                4",
+        " Maju melangkah tinggalkan beban",
+        "2m       1/3    4        5",
+        " S'bab hari ini adalah harinya Tuhan",
       ]},
-      { name: "Worshiping", lines: [
-        "4     5    4        1            4   5",
-        "  Aku kagum padaMu.. Yesus",
-        "4 1            4           5",
-        "  Kau melebihi apapun di dunia ini",
-        "4         1",
-        "  Hohowooo...",
+      { name: "Interlude", lines: [
+        "6m  5/7 1    2m    4",
+        "    Wooo - o Woooo Woooo..",
+      ]},
+      { name: "Ending", note: "×4", lines: [
+        "1  2⁷/1  4/1  4m/1",
       ]},
     ],
-    map: ["Intro", "Verse", "Chorus ×2", "Worshiping"],
+    map: [
+      "Intro",
+      "Verse",
+      "Pre-chorus",
+      "Chorus ×2",
+      "Interlude",
+      "Pre-chorus",
+      "Chorus ×2",
+      "Ending ×4",
+    ]
+  },
+  {
+    title: "Bersyukurlah",
+    artist: "True Worshippers", key: "G",
+    sections: [
+      { name: "Intro", note: "na-na-na over each chord", lines: [
+        "1    5    6m   4",
+      ]},
+      { name: "Bait", note: "chord placement approximate — the source lists them per line", lines: [
+        "1    5",
+        "Haleluya Kumemuji-Mu Tuhan",
+        "6m   4",
+        "Kar'na Kasih-Mu Tak Berkesudahan",
+        "1    5",
+        "Biar Yang Bernapas Memuji Sang Raja",
+        "♭7   5",
+        "Di Atas Gunung Dan Di Dalam Samudera",
+        "4    1",
+        "Tanganku Kuangkat Pada-Mu",
+        "3m   4    1/3",
+        "Mensyukuri Rahmat Yang Kau B'ri",
+        "4    1",
+        "Kakiku Melompat Bagi-Mu",
+        "2m   5    4    5",
+        "S'bab Rahmat-Mu Baru Setiap Pagi",
+      ]},
+      { name: "Reff", lines: [
+        "1    5",
+        "Bersyukurlah Kepada Tuhan",
+        "6m   4    6m   5",
+        "Sebab Ia Baik, Sebab Ia Ba-ik",
+        "1    5",
+        "Bahwasanya Untuk Selamanya",
+        "6m   4    6m   5",
+        "Kasih Setia-Nya, Kasih Setia-Nya",
+      ]},
+    ],
+    map: [
+      "Intro",
+      "Bait",
+      "Reff",
+      "Bait",
+      "Reff ×2",
+    ]
+  },
+  {
+    title: "Holy Forever",
+    artist: "Chris Tomlin", key: "C",
+    sections: [
+      { name: "Intro", lines: [
+        "| 1   4  6m 5 | 1/3  •  6m  5 |",
+      ]},
+      { name: "Verse 1", lines: [
+        "  1",
+        "A thousand generations",
+        "4               1",
+        "Falling down in worship",
+        "   6m               5           4",
+        "To sing the song of ages to the Lamb",
+        "    1",
+        "And all who've gone before us",
+        "    4              1",
+        "And all who will believe",
+        "     6m                5          4",
+        "Will sing the song of ages to the Lamb.",
+      ]},
+      { name: "Pre-chorus", note: "2nd time ends on 4; 3rd starts “Jesus, Your name…”", lines: [
+        "     4                  6m",
+        "Your name is the highest",
+        "     5",
+        "Your name is the greatest",
+        "     6m                     4",
+        "Your name stands above them all",
+        "    4                    6m",
+        "All thrones and dominions",
+        "    5",
+        "All powers and positions",
+        "     6m                     2m",
+        "Your name stands above them all.",
+      ]},
+      { name: "Chorus", note: "short version ends plain 1", lines: [
+        "                4    6m   5",
+        "And the angels cry: \"Ho - ly\"",
+        "             1/3          6m",
+        "All creation cries: \"Ho - ly\"",
+        "               2m         5",
+        "You are lifted high, ho - ly",
+        "        1   1sus4   1",
+        "Holy fore - ver.",
+      ]},
+      { name: "Verse 2", lines: [
+        "1",
+        "If you've been forgiven and",
+        "    4                1",
+        "And if you've been redeemed",
+        "6m               5           4",
+        "Sing the song forever to the Lamb",
+        "1",
+        "If you walk in freedom",
+        "    4               1",
+        "And if you bear His name",
+        "6m               5           4",
+        "Sing the song forever to the Lamb",
+        "      6m               5         4",
+        "We'll sing the song forever and amen.",
+      ]},
+      { name: "Chorus — 2nd half", note: "3rd chorus opens this on 1/3 4 6m 5", lines: [
+        "                 4       5",
+        "Hear your people sing, holy",
+        "               3m      6m",
+        "To the King of kings, holy",
+        "                2m    5",
+        "You will always be, holy",
+        "        1",
+        "Holy forever.",
+      ]},
+      { name: "Tag", lines: [
+        "                2m      5",
+        "You will always be ho - ly",
+        "        1   1sus4  1",
+        "Holy fore - ver.",
+      ]},
+    ],
+    map: [
+      "Intro",
+      "Verse 1",
+      "Pre-chorus",
+      "Chorus",
+      "Verse 2",
+      "Pre-chorus",
+      "Chorus",
+      "Chorus — 2nd half",
+      "Tag",
+    ]
+  },
+  {
+    title: "Hosanna — Be Lifted Higher",
+    artist: "Israel & New Breed", key: "C",
+    sections: [
+      { name: "Verse", note: "×2, then again a whole step up in D", lines: [
+        "1    1add9/7 1/6",
+        "Ho - san  -  na",
+        "       6m   5   1",
+        "In the hi - igh-est",
+        "        4              5",
+        "Let our King be lifted up,",
+        "  2m   5   1",
+        "Hosa  -  nna",
+      ]},
+      { name: "Bridge", note: "×2", lines: [
+        "          4       2m",
+        "Be lifted higher, higher,",
+        "          1      6m",
+        "be lifted higher",
+        "      5             4       2m",
+        "Jesus You be lifted higher, higher,",
+        "          1     6m       5",
+        "be lifted higher, (Jesus You)",
+      ]},
+    ],
+    map: [
+      "Verse ×2",
+      "Verse — up to D",
+      "Bridge ×2",
+      "Verse",
+    ]
   },
 ];
 
 // degree, optional accidental, optional quality, optional bass.
 // sevenths are superscript so 1⁷ never reads as "17".
-const CHORD = /^([b♭#♯]?)([1-7])(maj⁷|sus4|sus2|m⁷|m|⁷)?(?:\/([b♭#♯]?)([1-7]))?$/;
+const CHORD = /^([b♭#♯]?)([1-7])(maj⁷|sus4|sus2|add9|m⁷|m|⁷)?(?:\/([b♭#♯]?)([1-7]))?$/;
 // bars, beat dots, dashes and repeat marks sit on chord lines but aren't chords
 const MARKER = /^(\||•|-|×\d+(–\d+)?)$/;
 
@@ -456,7 +552,7 @@ const SCALES = {
   Bb:   ["Bb", "C", "D", "Eb", "F", "G", "A"],
   B:    ["B", "C#", "D#", "E", "F#", "G#", "A#"],
 };
-const QUALITY = { "maj⁷": "maj7", "m⁷": "m7", "⁷": "7", m: "m", sus4: "sus4", sus2: "sus2" };
+const QUALITY = { "maj⁷": "maj7", "m⁷": "m7", "⁷": "7", m: "m", sus4: "sus4", sus2: "sus2", add9: "add9" };
 
 function keyLabel(k) { return KEY_LABEL[k] || k; }
 
@@ -501,13 +597,9 @@ function toLetters(line, key) {
 
 // ---- Build ------------------------------------------------------------
 const main = document.getElementById("songs");
-const btnLyric = document.getElementById("btn-lyric");
 const btnNum = document.getElementById("btn-num");
+const btnKey = document.getElementById("btn-key");
 const blocks = [];
-// "numbers", or one of KEY_ORDER — chosen per song
-const chosen = SONGS.map((s) => {
-  try { return localStorage.getItem("songKey:" + s.title) || "numbers"; } catch (e) { return "numbers"; }
-});
 
 SONGS.forEach((song, i) => {
   const art = document.createElement("article");
@@ -527,32 +619,6 @@ SONGS.forEach((song, i) => {
   meta.className = "meta";
   meta.textContent = song.artist;
   head.appendChild(meta);
-
-  const label = document.createElement("label");
-  label.className = "keysel";
-  const cap = document.createElement("span");
-  cap.textContent = "Key";
-  const sel = document.createElement("select");
-  sel.setAttribute("aria-label", "Key for " + song.title);
-  const optNum = document.createElement("option");
-  optNum.value = "numbers";
-  optNum.textContent = "Numbers";
-  sel.appendChild(optNum);
-  KEY_ORDER.forEach((k) => {
-    const o = document.createElement("option");
-    o.value = k;
-    o.textContent = keyLabel(k) + (k === song.key ? "  (as written)" : "");
-    sel.appendChild(o);
-  });
-  sel.value = chosen[i];
-  sel.addEventListener("change", () => {
-    chosen[i] = sel.value;
-    try { localStorage.setItem("songKey:" + song.title, sel.value); } catch (e) {}
-    render();
-  });
-  label.appendChild(cap);
-  label.appendChild(sel);
-  head.appendChild(label);
 
   art.appendChild(head);
 
@@ -577,9 +643,7 @@ SONGS.forEach((song, i) => {
 
     const pre = document.createElement("pre");
     s.appendChild(pre);
-    // a section of nothing but chords has nothing to say in lyrics mode
-    const hasLyrics = sec.lines.some((line) => !isChordLine(line));
-    blocks.push({ song: i, sec: s, pre: pre, lines: sec.lines, shift: sec.shift || 0, hasLyrics: hasLyrics });
+    blocks.push({ song: i, pre: pre, lines: sec.lines, shift: sec.shift || 0 });
 
     sheet.appendChild(s);
   });
@@ -614,36 +678,33 @@ SONGS.forEach((song, i) => {
 });
 
 // ---- Render -----------------------------------------------------------
-let mode = "lyrics";
+// Two views: scale numbers, or letters in the key this song is played in.
+let mode = "numbers";
 
 function render() {
-  const lyrics = mode !== "chords";
+  const letters = mode === "key";
   blocks.forEach((b) => {
     b.pre.textContent = "";
-    b.sec.hidden = lyrics && !b.hasLyrics;
-    const pick = chosen[b.song];
-    const key = pick === "numbers" ? null : shiftKey(pick, b.shift);
+    const key = letters ? shiftKey(SONGS[b.song].key, b.shift) : null;
     b.lines.forEach((line) => {
       const chords = isChordLine(line);
-      if (chords && lyrics) return;
       const row = document.createElement("span");
       row.className = chords ? "cl" : "ly";
       row.textContent = chords && key ? toLetters(line, key) : line;
       b.pre.appendChild(row);
     });
   });
-  document.body.dataset.mode = lyrics ? "lyrics" : "chords";
-  btnLyric.setAttribute("aria-pressed", String(lyrics));
-  btnNum.setAttribute("aria-pressed", String(!lyrics));
-  try { localStorage.setItem("chartMode", lyrics ? "lyrics" : "chords"); } catch (e) {}
+  btnNum.setAttribute("aria-pressed", String(!letters));
+  btnKey.setAttribute("aria-pressed", String(letters));
+  try { localStorage.setItem("chartMode", mode); } catch (e) {}
 }
 
 function setMode(next) { mode = next; render(); }
 
-btnLyric.addEventListener("click", () => setMode("lyrics"));
-btnNum.addEventListener("click", () => setMode("chords"));
+btnNum.addEventListener("click", () => setMode("numbers"));
+btnKey.addEventListener("click", () => setMode("key"));
 
-try { mode = localStorage.getItem("chartMode") === "chords" ? "chords" : "lyrics"; } catch (e) {}
+try { mode = localStorage.getItem("chartMode") === "key" ? "key" : "numbers"; } catch (e) {}
 render();
 </script>
 
