@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Song List — Sunday 5 Oct</title>
+<title>Song List — Sunday 18 Oct</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%F0%9F%8E%B9</text></svg>">
 <style>
   /* ---- Light (default, un-stamped) ---------------------------------- */
@@ -57,7 +57,7 @@
     background: var(--paper);
     color: var(--ink);
     font-family: var(--sans);
-    font-size: 15px;
+    font-size: 14px;
     line-height: 1.6;
     -webkit-text-size-adjust: 100%;
     -webkit-font-smoothing: antialiased;
@@ -79,7 +79,7 @@
   }
   .brand {
     margin: 0;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
     line-height: 1.2;
     text-transform: uppercase;
@@ -95,7 +95,7 @@
   }
   .toggle button {
     font-family: var(--sans);
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: .18em;
@@ -113,6 +113,56 @@
   :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 
+  /* ---- Song nav ------------------------------------------------------ */
+  .nav {
+    position: sticky;
+    top: calc(env(safe-area-inset-top, 0px) + 73px);
+    z-index: 9;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule-2);
+    padding: 0 20px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 0 4px;
+    white-space: nowrap;
+  }
+  .nav a {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+    min-height: 44px;
+    padding: 12px 10px 10px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    border-bottom: 2px solid transparent;
+    transition: color .15s ease, border-color .15s ease;
+  }
+  .nav a .n { font-family: var(--mono); font-weight: 400; letter-spacing: 0; font-size: 10px; }
+  .nav a:hover { color: var(--ink); }
+  .nav a[aria-current="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+  .song { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 140px); }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  /* tablets and up: wrap the titles instead of scrolling sideways */
+  @media (min-width: 600px) {
+    .nav { overflow-x: visible; }
+    .nav ol { flex-wrap: wrap; white-space: normal; }
+    .nav a { white-space: nowrap; }
+  }
+  @media (min-width: 760px) { .nav { padding: 0 32px; } .nav a { font-size: 12px; } }
+
   /* ---- Page ---------------------------------------------------------- */
   .wrap { max-width: 1120px; margin: 0 auto; padding: 40px 20px 96px; }
 
@@ -127,14 +177,14 @@
   }
   .num {
     font-family: var(--mono);
-    font-size: 13px;
+    font-size: 12px;
     color: var(--muted);
     font-variant-numeric: tabular-nums;
     padding-top: 2px;
   }
   .song h2 {
     margin: 0;
-    font-size: clamp(26px, 5vw, 42px);
+    font-size: clamp(25px, 5vw, 41px);
     font-weight: 700;
     line-height: 1.05;
     letter-spacing: -.005em;
@@ -143,7 +193,7 @@
   }
 
   .head .meta {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: .2em;
@@ -158,7 +208,7 @@
   .sec { break-inside: avoid; margin-bottom: 26px; }
   .sec-name {
     margin: 0 0 6px;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: .2em;
@@ -198,9 +248,9 @@
   /* lyric sheets set a touch smaller, and stay single-column until there is
      room for two — .sheet.wide outranks the .sheet column rules by specificity. */
   .sheet.wide { columns: 1; }
-  .sheet.wide pre { font-size: 15px; line-height: 1.5; }
-  @media (min-width: 760px)  { .sheet.wide pre { font-size: 17px; } }
-  @media (min-width: 1100px) { .sheet.wide pre { font-size: 18px; } }
+  .sheet.wide pre { font-size: 14px; line-height: 1.5; }
+  @media (min-width: 760px)  { .sheet.wide pre { font-size: 16px; } }
+  @media (min-width: 1100px) { .sheet.wide pre { font-size: 17px; } }
 
   /* ---- Flow ---------------------------------------------------------- */
   .flow { margin-top: 10px; padding-top: 18px; border-top: 1px solid var(--rule-2); }
@@ -210,16 +260,16 @@
     flex-wrap: wrap;
     gap: 6px 10px;
     align-items: baseline;
-    font-size: 14px;
+    font-size: 13px;
     color: var(--ink-2);
   }
   .flow .steps .sep { color: var(--muted); }
 
   @media (min-width: 760px) {
-    body { font-size: 16px; }
+    body { font-size: 15px; }
     .wrap { padding: 52px 32px 112px; }
     pre { font-size: 21px; }
-    .flow .steps { font-size: 15px; }
+    .flow .steps { font-size: 14px; }
   }
   @media (min-width: 920px) {
     .sheet { columns: 2; column-gap: 56px; }
@@ -231,7 +281,7 @@
   }
 
   @media print {
-    .bar { display: none; }
+    .bar, .nav { display: none; }
     .sheet, .sheet.wide { columns: 2; }
     .song + .song { break-before: page; }
   }
@@ -239,12 +289,13 @@
 </head>
 <body>
 <header class="bar">
-  <h1 class="brand">Song List<span>Sunday 5 Oct</span></h1>
+  <h1 class="brand">Song List<span>Sunday 18 Oct</span></h1>
   <div class="toggle" role="group" aria-label="Chart display">
     <button id="btn-num" type="button" aria-pressed="true">Numbers</button>
     <button id="btn-key" type="button" aria-pressed="false">Key</button>
   </div>
 </header>
+<nav class="nav" aria-label="Songs"><ol id="nav"></ol></nav>
 
 <div class="wrap">
   <main id="songs"></main>
@@ -253,270 +304,293 @@
 <script>
 const SONGS = [
   {
-    title: "Sukacita Surga",
-    artist: "True Worshippers", key: "D",
-    sections: [
-      { name: "Intro", note: "×4", lines: [
-        "1   6m   4   5   4",
-      ]},
-      { name: "Bait", note: "chord placement approximate — the source lists them per line", lines: [
-        "1    6m   5/7  5   4",
-        "T'rima Sukacita Surga",
-        "1/3  4    6m   5",
-        "Itulah Kekuatan Bagi Jiwa",
-        "1/3  5/7  5    6m",
-        "Ku Dapat Rasakan KasihNya",
-        "2m   5",
-        "Di Tengah Badai Yang Bergelora",
-        "1    6m   ♭7   4/6  5/7",
-        "T'rima Sukacita Surga",
-        "1/3  4    6m   5",
-        "Itulah Kekuatan Bagi Jiwa",
-        "1/3  5    6m   1/3",
-        "Ku Dapat Saksikan KuasaNya",
-        "2m   5",
-        "Taklukkan Badai Yang Bergelora",
-      ]},
-      { name: "Reff", lines: [
-        "1    5/7  6m   4",
-        "Haleluya Kau Ada Dalam Hatiku",
-        "2m   5",
-        "Tak Kan Patah Semangatku",
-        "2m   5",
-        "Tak Kan Hilang Kekuatanku",
-        "1    5/7  6m   4",
-        "Haleluya Ku Mau Bersorak BagiMu",
-        "2m   5    1",
-        "Sukacita Surga Nyata Penuhiku",
-      ]},
-    ],
-    map: [
-      "Intro ×4",
-      "Bait",
-      "Reff",
-      "Bait",
-      "Reff ×2",
-    ]
-  },
-  {
-    title: "Kecap Dan Lihatlah",
-    artist: "GMS Live", key: "D",
+    title: "Open Up The Heavens",
+    artist: "GMS Live", key: "A",
     sections: [
       { name: "Intro", lines: [
-        "| 1/5  2⁷/♯4  ♭7  4/6 |",
-        "| 1    4/1  2m  3m  4 |",
-        "| 1/5  2    4    5    |",
-        "| 6m   2    2m  3m  4 |",
+        "| 1  •  •  • | 2m  •  •  • |",
+        "| 4  •  •  • | 1   •  •  • |",
       ]},
       { name: "Verse", lines: [
-        "1        2",
-        " Kecap dan lihatlah",
-        "   ♭7       4/6",
-        " Betapa baik Tuhan itu",
-        "1        4/1          2m   3m 4",
-        " Mulutku penuh dengan pu - jian",
+        "1",
+        "Open up the heavens as we sing",
+        "    5",
+        "The Kingdom of the Lord is here",
+        "   6m",
+        "in this place",
+        "   4",
+        "He shall reign over us",
+        "1",
+        "Let all the nations bless His name",
+        "    5",
+        "The one and only name",
+        "            6m",
+        "that reigns forevermore",
+        "            4",
+        "Behold, the name above all names, Jesus",
       ]},
-      { name: "Pre-chorus", lines: [
-        "1        4/1",
-        " KasihMu s'lalu baru",
-        "2m         4",
-        " Tak habis di hidupku",
-        "6m⁷       2⁷            2m 3m 4  5",
-        " Kan kunyanyikan syukur ba-gi-Mu",
+      { name: "Chorus", lines: [
+        "1                    5",
+        "The name that sets us free",
+        "         6m",
+        "Who gives us victory",
+        "         4",
+        "He holds authority",
+        "         1",
+        "He's the great I am",
+        "1                    5",
+        "The name that sets us free",
+        "         6m",
+        "Who gives us victory",
+        "         4",
+        "He holds authority",
+        "         1",
+        "He's the great I am.",
       ]},
-      { name: "Chorus", note: "×2", lines: [
-        "1               4",
-        " Angkat suaramu pujilah Tuhan",
-        "6m             4          5",
-        " Mari bersorak bertepuk tangan",
-        "1                4",
-        " Maju melangkah tinggalkan beban",
-        "2m       1/3    4        5",
-        " S'bab hari ini adalah harinya Tuhan",
+      { name: "Instrumental", note: "as intro", lines: [
+        "| 1  •  •  • | 2m  •  •  • |",
+        "| 4  •  •  • | 1   •  •  • |",
       ]},
-      { name: "Interlude", lines: [
-        "6m  5/7 1    2m    4",
-        "    Wooo - o Woooo Woooo..",
+      { name: "Interlude", note: "×2", lines: [
+        "| 6m  •  •  • | 5/7  •  •  • |",
+        "| 2m  •  •  • | 4    •  •  • |",
       ]},
-      { name: "Ending", note: "×4", lines: [
-        "1  2⁷/1  4/1  4m/1",
+      { name: "Ending", note: "×2", lines: [
+        "| 1  •  •  • | 2m  •  •  • |",
+        "| 4  •  •  • | 1   •  •  • |",
       ]},
     ],
     map: [
       "Intro",
       "Verse",
-      "Pre-chorus",
+      "Chorus",
+      "Instrumental",
+      "Verse",
+      "Chorus",
+      "Interlude ×2",
       "Chorus ×2",
-      "Interlude",
-      "Pre-chorus",
-      "Chorus ×2",
-      "Ending ×4",
+      "Ending ×2",
     ]
   },
   {
-    title: "Bersyukurlah",
-    artist: "True Worshippers", key: "G",
+    title: "God Is My Joy",
+    artist: "GMS Live", key: "G",
     sections: [
-      { name: "Intro", note: "na-na-na over each chord", lines: [
-        "1    5    6m   4",
-      ]},
-      { name: "Bait", note: "chord placement approximate — the source lists them per line", lines: [
-        "1    5",
-        "Haleluya Kumemuji-Mu Tuhan",
-        "6m   4",
-        "Kar'na Kasih-Mu Tak Berkesudahan",
-        "1    5",
-        "Biar Yang Bernapas Memuji Sang Raja",
-        "♭7   5",
-        "Di Atas Gunung Dan Di Dalam Samudera",
-        "4    1",
-        "Tanganku Kuangkat Pada-Mu",
-        "3m   4    1/3",
-        "Mensyukuri Rahmat Yang Kau B'ri",
-        "4    1",
-        "Kakiku Melompat Bagi-Mu",
-        "2m   5    4    5",
-        "S'bab Rahmat-Mu Baru Setiap Pagi",
-      ]},
-      { name: "Reff", lines: [
-        "1    5",
-        "Bersyukurlah Kepada Tuhan",
-        "6m   4    6m   5",
-        "Sebab Ia Baik, Sebab Ia Ba-ik",
-        "1    5",
-        "Bahwasanya Untuk Selamanya",
-        "6m   4    6m   5",
-        "Kasih Setia-Nya, Kasih Setia-Nya",
-      ]},
-    ],
-    map: [
-      "Intro",
-      "Bait",
-      "Reff",
-      "Bait",
-      "Reff ×2",
-    ]
-  },
-  {
-    title: "Holy Forever",
-    artist: "Chris Tomlin", key: "C",
-    sections: [
-      { name: "Intro", lines: [
-        "| 1   4  6m 5 | 1/3  •  6m  5 |",
-      ]},
       { name: "Verse 1", lines: [
-        "  1",
-        "A thousand generations",
-        "4               1",
-        "Falling down in worship",
-        "   6m               5           4",
-        "To sing the song of ages to the Lamb",
-        "    1",
-        "And all who've gone before us",
-        "    4              1",
-        "And all who will believe",
-        "     6m                5          4",
-        "Will sing the song of ages to the Lamb.",
-      ]},
-      { name: "Pre-chorus", note: "2nd time ends on 4; 3rd starts “Jesus, Your name…”", lines: [
-        "     4                  6m",
-        "Your name is the highest",
-        "     5",
-        "Your name is the greatest",
-        "     6m                     4",
-        "Your name stands above them all",
-        "    4                    6m",
-        "All thrones and dominions",
-        "    5",
-        "All powers and positions",
-        "     6m                     2m",
-        "Your name stands above them all.",
-      ]},
-      { name: "Chorus", note: "short version ends plain 1", lines: [
-        "                4    6m   5",
-        "And the angels cry: \"Ho - ly\"",
-        "             1/3          6m",
-        "All creation cries: \"Ho - ly\"",
-        "               2m         5",
-        "You are lifted high, ho - ly",
-        "        1   1sus4   1",
-        "Holy fore - ver.",
+        "   4             5  6m",
+        "Unending love in calvary",
+        "     4    5     1   5",
+        "Show me amazing grace",
+        "4         5         6m",
+        "Fears are gone and darkness fades",
+        "4         5       1",
+        "In the light of Your love",
       ]},
       { name: "Verse 2", lines: [
-        "1",
-        "If you've been forgiven and",
-        "    4                1",
-        "And if you've been redeemed",
-        "6m               5           4",
-        "Sing the song forever to the Lamb",
-        "1",
-        "If you walk in freedom",
-        "    4               1",
-        "And if you bear His name",
-        "6m               5           4",
-        "Sing the song forever to the Lamb",
-        "      6m               5         4",
-        "We'll sing the song forever and amen.",
+        "    4         5   6m",
+        "You came to mend my broken heart",
+        "     4    5    1",
+        "Gave me a joyful heart",
+        "      4          5    6m",
+        "I've found my place in Saviour's grace",
+        "5     4        5    1",
+        "Found freedom in Your grace",
       ]},
-      { name: "Chorus — 2nd half", note: "3rd chorus opens this on 1/3 4 6m 5", lines: [
-        "                 4       5",
-        "Hear your people sing, holy",
-        "               3m      6m",
-        "To the King of kings, holy",
-        "                2m    5",
-        "You will always be, holy",
-        "        1",
-        "Holy forever.",
+      { name: "Pre-chorus", lines: [
+        "5              5",
+        "God is my joy God is my joy",
       ]},
-      { name: "Tag", lines: [
-        "                2m      5",
-        "You will always be ho - ly",
-        "        1   1sus4  1",
-        "Holy fore - ver.",
+      { name: "Chorus", lines: [
+        "         1/3  4            5       6m",
+        "With the mu - sic I will praise You",
+        "1/3          4           5",
+        "Dance in the beat of Your love",
+        "       1/3  4              5    6m",
+        "By the po - wer of Your freedom",
+        "1/3          4           5",
+        "Dance in the beat of Your love",
+      ]},
+      { name: "Bridge", lines: [
+        "4        6m",
+        "O o over me",
+        "                       4        1",
+        "I know Your love is always over me",
+        "4        6m",
+        "O o over me",
+        "                   4              1",
+        "Your love is over me I'm free to dance",
       ]},
     ],
     map: [
-      "Intro",
       "Verse 1",
-      "Pre-chorus",
-      "Chorus",
       "Verse 2",
       "Pre-chorus",
       "Chorus",
-      "Chorus — 2nd half",
-      "Tag",
+      "Bridge",
+      "Chorus",
     ]
   },
   {
-    title: "Hosanna — Be Lifted Higher",
-    artist: "Israel & New Breed", key: "C",
+    title: "Biarlah RohMu Menyala-Nyala",
+    artist: "Welyar Kauntu", key: "G",
     sections: [
-      { name: "Verse", note: "×2, then again a whole step up in D", lines: [
-        "1    1add9/7 1/6",
-        "Ho - san  -  na",
-        "       6m   5   1",
-        "In the hi - igh-est",
-        "        4              5",
-        "Let our King be lifted up,",
-        "  2m   5   1",
-        "Hosa  -  nna",
+      { name: "Intro", lines: [
+        "| 1   •  •  • | ♭7  •  6m  • |",
+        "| 5   •  •  • | 1   •  •   • |",
+        "| ♭7  •  6m • | 1   •  •   • |",
       ]},
-      { name: "Bridge", note: "×2", lines: [
-        "          4       2m",
-        "Be lifted higher, higher,",
-        "          1      6m",
-        "be lifted higher",
-        "      5             4       2m",
-        "Jesus You be lifted higher, higher,",
-        "          1     6m       5",
-        "be lifted higher, (Jesus You)",
+      { name: "Chorus", lines: [
+        "        1",
+        "Biarlah rohmu menyala-nyala",
+        "    ♭7  6m    5",
+        "Dan layanilah Tuhan",
+        "        1",
+        "Biarlah rohmu menyala-nyala,",
+        "    ♭7  6m    1",
+        "Dan layanilah Tuhan.",
+      ]},
+      { name: "Verse", lines: [
+        "    4           3m",
+        "Tak ada banyak waktu",
+        "  2m        5       6m",
+        "Giatlah dan jangan lalai",
+        "          4        1/3",
+        "Pekerjaan besar menunggu",
+        "   2          5",
+        "Ladang siap dituai",
+        "6m               3m",
+        "Tanggalkan s'gala beban",
+        "     4          1",
+        "Dan dosa yang merintangi",
+        "   2m       1/3",
+        "Berlari pada tujuan",
+        "    4       5",
+        "Panggilan surgawi.",
+      ]},
+      { name: "Ending", lines: [
+        "| 2m  ♭7  2m  5  1 |",
       ]},
     ],
     map: [
-      "Verse ×2",
-      "Verse — up to D",
-      "Bridge ×2",
+      "Intro",
+      "Chorus",
       "Verse",
+      "Chorus",
+      "Ending",
+    ]
+  },
+  {
+    title: "Kemenangan Terjadi Di Sini",
+    artist: "Gereja Mawar Sharon", key: "G",
+    sections: [
+      { name: "Bait", note: "2nd time: 1 · 5/7 on lines 1 and 3 instead of 1 · 1maj⁷ · 3m", lines: [
+        "1          1maj⁷      3m",
+        "  Kumenyembah Dalam Kudus HadiratMu",
+        "        2m         5          1    4/1",
+        "  Hampiri Tahta Kasih KaruniaMu Bapa",
+        "1          1maj⁷    3m",
+        "  Kekuatanku Hanya Dalam HadiratMu",
+        "        2m         5       1",
+        "  Yesusku Hanya Kaulah Segalanya",
+      ]},
+      { name: "Reff", lines: [
+        "    1        5/7     6m  5",
+        "Kuyakin Kau Hadir Di Sini",
+        "    4                     6m  5",
+        "Kurasakan Kuasa Yang Tak Terbatas",
+        "    1        5/7     6m",
+        "Kuyakin Kau Nyata Di Sini",
+        "5       4                              5          1",
+        "Kemenangan (Kesembuhan, Kelepasan) Terjadi Di Sini",
+      ]},
+      { name: "Bridge", lines: [
+        "4                  6m",
+        "Seg'nap Jiwaku MemujiMu",
+        "4                  6m",
+        "Sungguh Besar Kau Yesusku",
+        "4                  6m",
+        "Seg'nap Hatiku MenyembahMu",
+        "      2         4",
+        "Kau Besar Kau Besar",
+        "      2         ♭7",
+        "Kau Besar Kau Besar",
+      ]},
+    ],
+    map: [
+      "Bait",
+      "Reff",
+      "Bait",
+      "Reff",
+      "Bridge",
+      "Reff",
+    ]
+  },
+  {
+    title: "How Great Is Our God",
+    artist: "Chris Tomlin", key: "G",
+    sections: [
+      { name: "Verse 1", lines: [
+        "1",
+        "The splendor of the King",
+        "6m",
+        "Clothed in majesty",
+        "    4",
+        "Let all the earth rejoice",
+        "4",
+        "All the earth rejoice",
+        "   1",
+        "He wraps Himself in light",
+        "    6m",
+        "And darkness tries to hide",
+        "                 4",
+        "And trembles at his voice",
+        "             4",
+        "Trembles at his voice",
+      ]},
+      { name: "Chorus", lines: [
+        "    1",
+        "How great is our God, sing with me",
+        "    6m",
+        "How great is our God, all will see",
+        "    4           5             1",
+        "How great, how great is our God",
+      ]},
+      { name: "Verse 2", lines: [
+        "1",
+        "Age to age He stands",
+        "    6m",
+        "And time is in His hands",
+        "               4",
+        "Beginning and the end",
+        "              4",
+        "Beginning and the end",
+        "    1",
+        "The Godhead, three in one",
+        "6m",
+        "Father, Spirit, Son",
+        "             4",
+        "The Lion and the Lamb",
+        "             4",
+        "The Lion and the Lamb",
+      ]},
+      { name: "Bridge", lines: [
+        "1",
+        "Name above all names",
+        "6m",
+        "Worthy of all praise",
+        "4",
+        "My heart will sing",
+        "    5             1",
+        "How great is our God",
+      ]},
+    ],
+    map: [
+      "Verse 1",
+      "Chorus",
+      "Verse 2",
+      "Chorus",
+      "Bridge ×2",
+      "Chorus ×2",
     ]
   },
 ];
@@ -598,6 +672,7 @@ function toLetters(line, key) {
 
 // ---- Build ------------------------------------------------------------
 const main = document.getElementById("songs");
+const nav = document.getElementById("nav");
 const btnNum = document.getElementById("btn-num");
 const btnKey = document.getElementById("btn-key");
 const blocks = [];
@@ -605,6 +680,18 @@ const blocks = [];
 SONGS.forEach((song, i) => {
   const art = document.createElement("article");
   art.className = "song";
+  art.id = "song-" + (i + 1);
+
+  const li = document.createElement("li");
+  const a = document.createElement("a");
+  a.href = "#song-" + (i + 1);
+  const an = document.createElement("span");
+  an.className = "n";
+  an.textContent = String(i + 1).padStart(2, "0");
+  a.appendChild(an);
+  a.appendChild(document.createTextNode(song.title));
+  li.appendChild(a);
+  nav.appendChild(li);
 
   const head = document.createElement("div");
   head.className = "head";
@@ -677,6 +764,34 @@ SONGS.forEach((song, i) => {
 
   main.appendChild(art);
 });
+
+// ---- Nav: mark the song currently in view ------------------------------
+const navLinks = Array.from(nav.querySelectorAll("a"));
+function setCurrent(id) {
+  navLinks.forEach((l) => {
+    const on = l.getAttribute("href") === "#" + id;
+    if (on) l.setAttribute("aria-current", "true"); else l.removeAttribute("aria-current");
+    if (on && l.scrollIntoView) l.scrollIntoView({ block: "nearest", inline: "nearest" });
+  });
+}
+if ("IntersectionObserver" in window) {
+  const seen = new Map();
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => seen.set(e.target.id, e.isIntersecting));
+    const first = Array.from(main.querySelectorAll(".song")).find((el) => seen.get(el.id));
+    if (first) setCurrent(first.id);
+  }, { rootMargin: "-45% 0px -45% 0px" });
+  main.querySelectorAll(".song").forEach((el) => io.observe(el));
+}
+setCurrent("song-1");
+
+// anchors land below the sticky bar and nav, whatever height they wrap to
+function setScrollOffset() {
+  const h = document.querySelector(".bar").offsetHeight + nav.parentElement.offsetHeight + 16;
+  main.querySelectorAll(".song").forEach((el) => { el.style.scrollMarginTop = h + "px"; });
+}
+setScrollOffset();
+window.addEventListener("resize", setScrollOffset);
 
 // ---- Render -----------------------------------------------------------
 // Two views: scale numbers, or letters in the key this song is played in.
