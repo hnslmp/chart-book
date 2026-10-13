@@ -192,6 +192,19 @@
     text-wrap: balance;
   }
 
+  /* the key the song is played in, sat right beside its title */
+  .head .key {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--ink-2);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 5px 8px;
+    white-space: nowrap;
+  }
+
   .head .meta {
     font-size: 10px;
     font-weight: 600;
@@ -651,6 +664,12 @@ SONGS.forEach((song, i) => {
   h2.textContent = song.title;
   head.appendChild(num);
   head.appendChild(h2);
+
+  const key = document.createElement("span");
+  key.className = "key";
+  key.textContent = keyLabel(song.key);
+  key.setAttribute("aria-label", "Key of " + keyLabel(song.key));
+  head.appendChild(key);
 
   const meta = document.createElement("span");
   meta.className = "meta";
