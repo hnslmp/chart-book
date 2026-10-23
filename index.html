@@ -289,10 +289,16 @@
     pre { font-size: 21px; }
     .flow .steps { font-size: 14px; }
   }
-  @media (min-width: 920px) {
+  @media (min-width: 820px) {
     .sheet { columns: 2; column-gap: 56px; }
     .sheet.wide { columns: 2; column-gap: 40px; }
     .sec { margin-bottom: 30px; }
+  }
+  /* tablet portrait: two columns, so give the gutters back to the charts */
+  @media (min-width: 820px) and (max-width: 1099px) {
+    .wrap { padding: 44px 18px 96px; }
+    .sheet.wide { column-gap: 26px; }
+    .sheet.wide pre { padding-left: 10px; }
   }
   @media (min-width: 1100px) {
     pre { font-size: 23px; }
@@ -946,22 +952,32 @@ function render() {
 
 // Chord columns only line up in a monospace block, so the lines cannot wrap.
 // Shrink any block that would overflow its column until it fits.
+// A song settles on one size for all of its blocks — the widest line decides.
+// Sizing each block on its own would leave a two-column spread looking ragged.
 const MIN_PX = 11;
 function fitBlocks() {
-  blocks.forEach((b) => {
-    const pre = b.pre;
-    pre.style.fontSize = "";
-    pre.style.overflowX = "";
-    if (!pre.clientWidth) return;
-    for (let pass = 0; pass < 3 && pre.scrollWidth > pre.clientWidth; pass++) {
+  blocks.forEach((b) => { b.pre.style.fontSize = ""; b.pre.style.overflowX = ""; });
+  const size = new Map();
+  for (let pass = 0; pass < 3; pass++) {
+    let tighter = false;
+    blocks.forEach((b) => {
+      const pre = b.pre;
+      if (!pre.clientWidth || pre.scrollWidth <= pre.clientWidth) return;
       const now = parseFloat(getComputedStyle(pre).fontSize);
-      const next = now * (pre.clientWidth / pre.scrollWidth);
-      if (next >= now || next < MIN_PX) break;
-      pre.style.fontSize = (Math.floor(next * 10) / 10) + "px";
-    }
-    // a block too long even at the floor keeps its scrollbar: clipping would
-    // lose words, which is worse than the thing we are avoiding
-    if (pre.scrollWidth > pre.clientWidth) pre.style.overflowX = "auto";
+      const need = Math.max(MIN_PX, Math.floor(now * (pre.clientWidth / pre.scrollWidth) * 10) / 10);
+      const cur = size.get(b.song);
+      if (cur === undefined || need < cur) { size.set(b.song, need); tighter = true; }
+    });
+    if (!tighter) break;
+    blocks.forEach((b) => {
+      const s = size.get(b.song);
+      if (s !== undefined) b.pre.style.fontSize = s + "px";
+    });
+  }
+  // a block too long even at the floor keeps its scrollbar: clipping would
+  // lose words, which is worse than the thing we are avoiding
+  blocks.forEach((b) => {
+    if (b.pre.scrollWidth > b.pre.clientWidth) b.pre.style.overflowX = "auto";
   });
 }
 
