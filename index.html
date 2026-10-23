@@ -250,8 +250,7 @@
     line-height: 1.75;
     letter-spacing: .01em;
     white-space: pre;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+    overflow-x: hidden;
     font-variant-numeric: tabular-nums;
   }
 
@@ -292,7 +291,7 @@
   }
   @media (min-width: 920px) {
     .sheet { columns: 2; column-gap: 56px; }
-    .sheet.wide { columns: 2; column-gap: 48px; }
+    .sheet.wide { columns: 2; column-gap: 40px; }
     .sec { margin-bottom: 30px; }
   }
   @media (min-width: 1100px) {
@@ -639,10 +638,18 @@ const SONGS = [
         "| 1  4  1  5 |",
       ]},
       { name: "Verse 1", lines: [
-        "1                  4                      1                       5",
-        "   Amazing love   that welcomes me    the kindness of mercy",
-        "1                              4                   6m                5",
-        "   That bought with blood   wholeheartedly    my soul undeserving",
+        "1",
+        "   Amazing love",
+        " 4",
+        "that welcomes me",
+        "    1                       5",
+        "the kindness of mercy",
+        "1",
+        "   That bought with blood",
+        "   4",
+        "wholeheartedly",
+        "     6m                5",
+        "my soul undeserving",
       ]},
       { name: "Chorus", lines: [
         "1                 5                        1",
@@ -651,10 +658,16 @@ const SONGS = [
         "God, You're so good, You're so good to me",
       ]},
       { name: "Verse 2", lines: [
-        "1                       4              1                5",
-        "   Behold the cross   age to age    and hour by hour",
-        "1                        4                      6m",
-        "   The dead are raised,  the sinner saved    the work of Your power",
+        "1",
+        "   Behold the cross",
+        "  4",
+        "age to age",
+        "   1                5",
+        "and hour by hour",
+        "1                        4",
+        "   The dead are raised,  the sinner saved",
+        "   6m",
+        "the work of Your power",
       ]},
       { name: "Bridge", lines: [
         "      5                               6m",
@@ -675,10 +688,18 @@ const SONGS = [
         "For the glory of Jesus' name",
       ]},
       { name: "Verse 3", lines: [
-        "1                            4                     1                     5",
-        "   And should this life   bring suffering,   Lord, I will remember",
-        "6m                 4                       1                      5",
-        "   What Calvary   has bought for me    both now and forever",
+        "1",
+        "   And should this life",
+        "   4",
+        "bring suffering,",
+        "      1                     5",
+        "Lord, I will remember",
+        "6m",
+        "   What Calvary",
+        " 4",
+        "has bought for me",
+        "    1                      5",
+        "both now and forever",
       ]},
     ],
     map: [
@@ -896,7 +917,9 @@ function setScrollOffset() {
   main.querySelectorAll(".song").forEach((el) => { el.style.scrollMarginTop = h + "px"; });
 }
 setScrollOffset();
-window.addEventListener("resize", setScrollOffset);
+window.addEventListener("resize", function () { setScrollOffset(); fitBlocks(); });
+// the mono face can land after first paint and change every measurement
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitBlocks);
 
 // ---- Render -----------------------------------------------------------
 // Two views: scale numbers, or letters in the key this song is played in.
@@ -918,6 +941,28 @@ function render() {
   btnNum.setAttribute("aria-pressed", String(!letters));
   btnKey.setAttribute("aria-pressed", String(letters));
   try { localStorage.setItem("chartMode", mode); } catch (e) {}
+  fitBlocks();
+}
+
+// Chord columns only line up in a monospace block, so the lines cannot wrap.
+// Shrink any block that would overflow its column until it fits.
+const MIN_PX = 11;
+function fitBlocks() {
+  blocks.forEach((b) => {
+    const pre = b.pre;
+    pre.style.fontSize = "";
+    pre.style.overflowX = "";
+    if (!pre.clientWidth) return;
+    for (let pass = 0; pass < 3 && pre.scrollWidth > pre.clientWidth; pass++) {
+      const now = parseFloat(getComputedStyle(pre).fontSize);
+      const next = now * (pre.clientWidth / pre.scrollWidth);
+      if (next >= now || next < MIN_PX) break;
+      pre.style.fontSize = (Math.floor(next * 10) / 10) + "px";
+    }
+    // a block too long even at the floor keeps its scrollbar: clipping would
+    // lose words, which is worse than the thing we are avoiding
+    if (pre.scrollWidth > pre.clientWidth) pre.style.overflowX = "auto";
+  });
 }
 
 function setMode(next) { mode = next; render(); }
